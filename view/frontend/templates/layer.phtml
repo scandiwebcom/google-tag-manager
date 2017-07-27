@@ -1,0 +1,15 @@
+<?php
+/**
+ * @category Scandi
+ * @package Scandi\Gtm
+ * @author Oleksii Tsebinoga <aleksejt@scandiweb.com>
+ * @copyright Copyright (c) 2017 Scandiweb, Ltd (http://scandiweb.com)
+ * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+
+/** @var $block \Scandi\Gtm\Block\DataLayer|\Scandi\Gtm\Block\Product|\Scandi\Gtm\Block\Search|\Scandi\Gtm\Block\Success */
+?>
+
+<?php
+echo json_encode($block->collectLayer());
+?>

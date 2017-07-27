@@ -1,0 +1,75 @@
+<?php
+/**
+ * @category Scandi
+ * @package Scandi\Gtm
+ * @author Oleksii Tsebinoga <aleksejt@scandiweb.com>
+ * @copyright Copyright (c) 2017 Scandiweb, Ltd (http://scandiweb.com)
+ * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+
+/** @var $block \Scandi\Gtm\Block\Gtm */
+?>
+
+<?php
+echo $block->getGtm('head');
+?>
+
+<!-- Product grid -->
+<script>
+    require(['jquery', 'jquery/ui'], function ($) {
+        jQuery(document).ready(function () {
+            var i = 1;
+            var items = jQuery('<?php echo $block->configHelper->getCategoryWrapper(); ?>');
+            if (items) {
+                items.each(
+                    function () {
+                        var el = jQuery(this);
+                        el.click(function (event) {
+                            productClick(this);
+                        });
+                        el.attr('number', i);
+                        i++;
+                    }
+                );
+            }
+        });
+
+        function productClick(el) {
+            var clickedProduct = jQuery(el).attr('number');
+            var i, len;
+            for (i = 0, len = dataLayer.length - 1; i < len; i++) {
+                if (!dataLayer[i]["ecommerce"]) {
+                    continue;
+                }
+                if (!dataLayer[i]["ecommerce"]["impressions"]) {
+                    continue;
+                }
+                for (var j = 0, length = dataLayer[i]["ecommerce"]["impressions"].length; j < length; j++) {
+                    if (dataLayer[i]["ecommerce"]["impressions"][j].position != clickedProduct) {
+                        continue;
+                    }
+                    var product = dataLayer[i]["ecommerce"]["impressions"][j];
+                    dataLayer.push({
+                        "event": "productClick",
+                        "ecommerce": {
+                            "click": {
+                                "actionField": {
+                                    "list": product.list
+                                },
+                                "products": [{
+                                    "id": product.id,
+                                    "name": product.name,
+                                    "price": product.price,
+                                    "category": product.category,
+                                    "position": product.position
+                                }]
+                            }
+                        }
+                    });
+                    return true;
+                }
+            }
+            return false;
+        }
+    });
+</script>

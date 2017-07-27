@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * @packSomeandi\Gtm
+ * @author Oleksii Tsebinoga <aleksejt@scandiweb.com>
+ * @copyright Copyright (c) 2017 Scandiweb, Ltd (http://scandiweb.com)
+ * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_remove_item">
+        <observer name="gtmRemoveFromCart" instance="Scandi\Gtm\Observer\RemoveFromCart"/>
+    </event>
+    <event name="checkout_cart_add_product_complete">
+        <observer name="gtmAddToCart" instance="Scandi\Gtm\Observer\AddToCart"/>
+    </event>
+    <event name="checkout_onepage_controller_success_action">
+        <observer name="gtmSuccess" instance="Scandi\Gtm\Observer\Success"/>
+    </event>
+</config>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * @package Scandi\Gtm
+ * @author Oleksii Tsebinoga <aleksejt@scandiweb.com>
+ * @copyright Copyright (c) 2017 Scandiweb, Ltd (http://scandiweb.com)
+ * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Scandi_Gtm::js/catalogProductView.js"/>
+    </head>
+    <!--<referenceBlock name="gtm_head" remove="true"/>-->
+    <referenceBlock name="scandi_gtm_head">
+        <block class="Scandi\Gtm\Block\Product" name="gtm_head" template="layer.phtml" cacheable="false"/>
+    </referenceBlock>
+    <body>
+        <!--<referenceBlock name="gtm_body" remove="true"/>-->
+        <referenceBlock name="scandi_gtm_body">
+            <block class="Scandi\Gtm\Block\Product" name="gtm_body" template="layer.phtml" cacheable="false"/>
+        </referenceBlock>
+    </body>
+</page>

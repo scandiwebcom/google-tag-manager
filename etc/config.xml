@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * @package Scandi\Gtm
+ * @author Oleksii Tsebinoga <aleksejt@scandiweb.com>
+ * @copyright Copyright (c) 2017 Scandiweb, Ltd (http://scandiweb.com)
+ * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <scandi_gtm>
+            <general>
+                <enable>0</enable>
+                <container_id></container_id>
+                <store_in_head>1</store_in_head>
+            </general>
+            <developer>
+                <category_wrapper>ol.product-items > li.item.product-item</category_wrapper>
+                <checkout_steps>#shipping, #payment</checkout_steps>
+            </developer>
+        </scandi_gtm>
+    </default>
+</config>
