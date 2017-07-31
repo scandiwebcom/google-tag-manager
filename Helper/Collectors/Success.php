@@ -74,7 +74,11 @@ class Success
     public function getOrder($orderData)
     {
         if (array_key_exists('order_id', $orderData)) {
-            return $this->order->get($orderData->order_id);
+            try {
+                return $this->order->get($orderData->order_id);
+            } catch (\Exception $e) {
+                return false;
+            }
         }
         return false;
     }

@@ -48,7 +48,7 @@ class Success implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $orderData['order_id'] = $this->order->get($observer->getEvent()->getOrderIds()[0])->getIncrementId();
+        $orderData['order_id'] = $observer->getEvent()->getOrderIds()[0];
         $this->checkoutSession->setGtmSuccess(json_encode($orderData));
     }
 }
