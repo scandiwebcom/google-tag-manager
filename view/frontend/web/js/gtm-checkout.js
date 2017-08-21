@@ -72,7 +72,7 @@ require(['jquery'],
                 if (dataLayer[i]["ecommerce"]["cart"]) {
                     var cart = dataLayer[i]["ecommerce"]["cart"];
                     // clean cart from ecommerce, as it would be pushed into the checkout data
-                    dataLayer[i]["ecommerce"]["cart"] = [];
+                    delete(dataLayer[i]["ecommerce"]["cart"]);
                     return cart;
                 }
             }

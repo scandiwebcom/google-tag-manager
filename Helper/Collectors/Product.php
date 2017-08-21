@@ -12,10 +12,11 @@ namespace Scandi\Gtm\Helper\Collectors;
 
 use Magento\Catalog\Block\Product\View\AbstractView;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\Json\Helper\Data;
 use Magento\Framework\Registry;
 use Scandi\Gtm\Helper\Config;
-use Scandi\Gtm\Helper\Collectors\Category;
 use Scandi\Gtm\Helper\Price;
+
 
 class Product
 {
@@ -51,6 +52,11 @@ class Product
     protected $config;
 
     /**
+     * @var Data
+     */
+    protected $jsonHelper;
+
+    /**
      * Product constructor.
      * @param AbstractView $view
      * @param Registry $registry
@@ -58,6 +64,7 @@ class Product
      * @param ProductRepository $productRepository
      * @param Price $price
      * @param Config $config
+     * @param Data $jsonHelper
      */
     public function __construct(
         AbstractView $view,
@@ -65,7 +72,8 @@ class Product
         Category $category,
         ProductRepository $productRepository,
         Price $price,
-        Config $config
+        Config $config,
+        Data $jsonHelper
     )
     {
         $this->view = $view;
@@ -74,6 +82,7 @@ class Product
         $this->productRepository = $productRepository;
         $this->price = $price;
         $this->config = $config;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -87,7 +96,6 @@ class Product
     /**
      * @param $product
      * @param null $pageType
-     * @return mixed
      */
     public function collectProductData($product, $pageType = null)
     {
@@ -111,7 +119,10 @@ class Product
         if ($pageType) {
             $productData['list'] = $pageType;
         }
-        return $productData;
+        if ($pageType !== 'product') {
+            return $productData;
+        }
+        return $this->handleDetailsPush($productData);
     }
 
     /**
@@ -144,5 +155,12 @@ class Product
     {
         $product = $this->productRepository->getById($id);
         return $this->collectCartEvent($product, $eventName);
+    }
+
+
+    private function handleDetailsPush($productsDetails) {
+        $push['event'] = 'details';
+        $push['details'] = $productsDetails;
+        return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";
     }
 }

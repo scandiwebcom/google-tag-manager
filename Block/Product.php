@@ -50,7 +50,7 @@ class Product extends DataLayerCollector
     public function collectLayer()
     {
         $layer = $this->dataLayer->collectLayer();
-        $layer['ecommerce']['details'] = $this->product->createDetails();
+//        $layer['ecommerce']['details'] = $this->product->createDetails();
         return $layer;
     }
 }

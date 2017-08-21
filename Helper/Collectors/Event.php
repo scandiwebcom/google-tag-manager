@@ -11,6 +11,7 @@
 namespace Scandi\Gtm\Helper\Collectors;
 
 use Magento\Customer\Model\Session;
+use Scandi\Gtm\Helper\Collectors\Product as GTMProduct;
 
 class Event
 {
@@ -36,23 +37,31 @@ class Event
     protected $category;
 
     /**
+     * @var GTMProduct
+     */
+    protected $product;
+
+    /**
      * Event constructor.
      * @param Session $customerSession
      * @param Category $category
      * @param Search $search
      * @param Checkout $checkout
+     * @param Product $product
      */
     public function __construct(
         Session $customerSession,
         Category $category,
         Search $search,
-        Checkout $checkout
+        Checkout $checkout,
+        GTMProduct $product
     )
     {
         $this->customerSession = $customerSession;
         $this->category = $category;
         $this->search = $search;
         $this->checkout = $checkout;
+        $this->product = $product;
     }
 
     /**
@@ -87,6 +96,9 @@ class Event
                 break;
             case 'checkout':
                 $pushes .= $this->checkout->getCheckoutSteps();
+                break;
+            case 'product':
+                $pushes .= $this->product->createDetails();
                 break;
             default:
                 return $pushes;
