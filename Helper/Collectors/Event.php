@@ -42,19 +42,26 @@ class Event
     protected $product;
 
     /**
+     * @var Success
+     */
+    protected $success;
+
+    /**
      * Event constructor.
      * @param Session $customerSession
      * @param Category $category
      * @param Search $search
      * @param Checkout $checkout
      * @param Product $product
+     * @param Success $success
      */
     public function __construct(
         Session $customerSession,
         Category $category,
         Search $search,
         Checkout $checkout,
-        GTMProduct $product
+        GTMProduct $product,
+        Success $success
     )
     {
         $this->customerSession = $customerSession;
@@ -62,26 +69,11 @@ class Event
         $this->search = $search;
         $this->checkout = $checkout;
         $this->product = $product;
+        $this->success = $success;
     }
 
     /**
-     * @return bool
-     */
-    public function getEventPushData()
-    {
-        if ($this->customerSession->getAddToCart()) {
-            $addPush = $this->customerSession->getAddToCart();
-            $this->customerSession->unsAddToCart();
-            return $addPush;
-        } else if ($this->customerSession->getRemoveFromCart()) {
-            $removePush = $this->customerSession->getRemoveFromCart();
-            $this->customerSession->unsRemoveFromCart();
-            return $removePush;
-        }
-        return false;
-    }
-
-    /**
+     * Method to handle all possible pushes
      * @return string
      */
     public function gatherPushes($pageName = null)
@@ -100,6 +92,9 @@ class Event
             case 'product':
                 $pushes .= $this->product->createDetails();
                 break;
+            case 'success':
+                $pushes .= $this->success->collectSuccess();
+                break;
             default:
                 return $pushes;
         }
@@ -107,6 +102,23 @@ class Event
             $pushes .= $this->handleImpressions($impressionsPush);
         }
         return $pushes;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEventPushData()
+    {
+        if ($this->customerSession->getAddToCart()) {
+            $addPush = $this->customerSession->getAddToCart();
+            $this->customerSession->unsAddToCart();
+            return $addPush;
+        } else if ($this->customerSession->getRemoveFromCart()) {
+            $removePush = $this->customerSession->getRemoveFromCart();
+            $this->customerSession->unsRemoveFromCart();
+            return $removePush;
+        }
+        return false;
     }
 
     /**

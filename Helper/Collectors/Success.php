@@ -12,7 +12,9 @@ namespace Scandi\Gtm\Helper\Collectors;
 
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Session;
+use Magento\Framework\Json\Helper\Data;
 use Magento\Sales\Model\OrderRepository;
+
 
 class Success
 {
@@ -38,23 +40,31 @@ class Success
     protected $category;
 
     /**
+     * @var Data
+     */
+    protected $jsonHelper;
+
+    /**
      * Success constructor.
      * @param Session $checkoutSession
      * @param OrderRepository $order
      * @param ProductRepository $productRepository
      * @param Category $category
+     * @param Data $jsonHelper
      */
     public function __construct(
         Session $checkoutSession,
         OrderRepository $order,
         ProductRepository $productRepository,
-        Category $category
+        Category $category,
+        Data $jsonHelper
     )
     {
         $this->checkoutSession = $checkoutSession;
         $this->order = $order;
         $this->productRepository = $productRepository;
         $this->category = $category;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
@@ -62,9 +72,9 @@ class Success
      */
     public function collectSuccess()
     {
-        $order = $this->gatherSuccessData(json_decode($this->checkoutSession->getGtmSuccess()));
+        $order = $this->gatherSuccessData($this->jsonHelper->jsonDecode($this->checkoutSession->getGtmSuccess()));
         $this->checkoutSession->unstGtmSuccess();
-        return $order;
+        return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($order) . ")</script>";
     }
 
     /**
@@ -75,7 +85,7 @@ class Success
     {
         if (array_key_exists('order_id', $orderData)) {
             try {
-                return $this->order->get($orderData->order_id);
+                return $this->order->get($orderData['order_id']);
             } catch (\Exception $e) {
                 return false;
             }
@@ -93,6 +103,7 @@ class Success
         if (!$order) {
             return array();
         }
+        $successData['event'] = 'purchase';
         $successData['currencyCode'] = $order->getOrderCurrencyCode();
         $successData['purchase']['actionField'] = $this->gatherActionField($order);
         $successData['purchase']['products'] = $this->gatherProducts($order);
