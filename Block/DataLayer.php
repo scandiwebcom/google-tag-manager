@@ -96,8 +96,8 @@ class DataLayer extends DataLayerCollector
     public function collectLayer()
     {
         $id = $this->customerHelper->getCustomerId($this->customerSession);
-        $layer['ecommerce']['pageType'] = $this->getPageName();
-        $layer['ecommerce']['customerId'] = $id;
+        $layer['pageType'] = $this->getPageName();
+        $layer['customerId'] = $id;
         $layer['ecommerce']['cart'] = $this->cart->collectCart();
         if (!$layer['ecommerce']['cart']) {
             unset($layer['ecommerce']['cart']);

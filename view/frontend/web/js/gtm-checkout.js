@@ -70,7 +70,10 @@ require(['jquery'],
         function getCart() {
             for (var i = 0, len = dataLayer.length - 1; i < len; i++) {
                 if (dataLayer[i]["ecommerce"]["cart"]) {
-                    return dataLayer[i]['ecommerce']['cart'].products;
+                    var cart = dataLayer[i]["ecommerce"]["cart"];
+                    // clean cart from ecommerce, as it would be pushed into the checkout data
+                    dataLayer[i]["ecommerce"]["cart"] = [];
+                    return cart;
                 }
             }
             return false;
