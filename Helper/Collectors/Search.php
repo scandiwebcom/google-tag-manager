@@ -103,7 +103,7 @@ class Search
             ];
             $i++;
         }
-        return isset($impressions) ? $impressions : false;
+        return isset($impressions) ? $impressions : null;
     }
 
     /**
