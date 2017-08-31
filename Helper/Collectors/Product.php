@@ -159,8 +159,8 @@ class Product
 
 
     private function handleDetailsPush($productsDetails) {
-        $push['event'] = 'details';
-        $push['details'] = $productsDetails;
+        $push['ecommerce']['event'] = 'details';
+        $push['ecommerce']['details'] = $productsDetails;
         return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";
     }
 }
