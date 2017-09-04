@@ -132,7 +132,7 @@ class Product
      */
     public function collectCartEvent($product, $eventName)
     {
-        $addData['ecommerce']['event'] = $eventName;
+        $addData['event'] = $eventName;
         switch ($eventName) {
             case 'addToCart':
                 $addData['ecommerce']['add'] = $this->collectProductData($product);
@@ -159,7 +159,7 @@ class Product
 
 
     private function handleDetailsPush($productsDetails) {
-        $push['ecommerce']['event'] = 'details';
+        $push['event'] = 'details';
         $push['ecommerce']['details'] = $productsDetails;
         return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";
     }

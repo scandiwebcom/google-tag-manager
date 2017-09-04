@@ -8,7 +8,7 @@ Run
 
 ```
 composer config repositories.scandi-google-tag-manager git git@github.com:scandiwebcom/google-tag-manager.git
-composer require scandiwebcom/google-tag-manager:1.0.5
+composer require scandiwebcom/google-tag-manager:1.0.6
 php -f bin/magento setup:upgrade
 ```
 ## Configuration

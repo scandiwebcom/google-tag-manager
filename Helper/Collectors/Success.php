@@ -103,7 +103,7 @@ class Success
         if (!$order) {
             return array();
         }
-        $successData['ecommerce']['event'] = 'purchase';
+        $successData['event'] = 'purchase';
         $successData['ecommerce']['currencyCode'] = $order->getOrderCurrencyCode();
         $successData['ecommerce']['purchase']['actionField'] = $this->gatherActionField($order);
         $successData['ecommerce']['purchase']['products'] = $this->gatherProducts($order);

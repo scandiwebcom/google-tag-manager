@@ -50,8 +50,8 @@ echo $block->getGtm('head');
                     }
                     var product = dataLayer[i]["ecommerce"]["impressions"][j];
                     dataLayer.push({
+                        "event": "productClick",
                         "ecommerce": {
-                            "event": "productClick",
                             "click": {
                                 "actionField": {
                                     "list": product.list
