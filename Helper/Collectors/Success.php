@@ -103,10 +103,10 @@ class Success
         if (!$order) {
             return array();
         }
-        $successData['event'] = 'purchase';
-        $successData['currencyCode'] = $order->getOrderCurrencyCode();
-        $successData['purchase']['actionField'] = $this->gatherActionField($order);
-        $successData['purchase']['products'] = $this->gatherProducts($order);
+        $successData['ecommerce']['event'] = 'purchase';
+        $successData['ecommerce']['currencyCode'] = $order->getOrderCurrencyCode();
+        $successData['ecommerce']['purchase']['actionField'] = $this->gatherActionField($order);
+        $successData['ecommerce']['purchase']['products'] = $this->gatherProducts($order);
         return $successData;
     }
 

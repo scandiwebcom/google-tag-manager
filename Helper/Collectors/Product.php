@@ -132,7 +132,7 @@ class Product
      */
     public function collectCartEvent($product, $eventName)
     {
-        $addData['event'] = $eventName;
+        $addData['ecommerce']['event'] = $eventName;
         switch ($eventName) {
             case 'addToCart':
                 $addData['ecommerce']['add'] = $this->collectProductData($product);
