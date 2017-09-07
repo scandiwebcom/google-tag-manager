@@ -4,16 +4,22 @@ This module is used to inject Google Tag Manager script and dataLayer collection
 
 ## Installation
 
-Run
+Add Scandiweb_Core if it is not added already by running
+```
+composer config repositories.scandiweb-module-core git git@github.com:scandiwebcom/Scandiweb-Assets-Core.git
+composer require scandiweb/module-core:~0.1.2
+```
+
+Add the exrension by running
 
 ```
 composer config repositories.scandi-google-tag-manager git git@github.com:scandiwebcom/google-tag-manager.git
-composer require scandiwebcom/google-tag-manager:1.0.6
+composer require scandiwebcom/google-tag-manager:1.0.7
 php -f bin/magento setup:upgrade
 ```
 ## Configuration
 
-Go to the Stores -> Configurations -> Scandi -> Gtm from the admin panel.
+Go to the Stores -> Configurations -> Scandiweb -> Google Tag Manager from the admin panel.
 
 1. Ensure that module is enabled, switch to 'Yes', if required;
 
