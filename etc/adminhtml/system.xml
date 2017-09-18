@@ -54,6 +54,14 @@
                         Leave blank, if one step checkout is used
                     </comment>
                 </field>
+                <field id="pagesize_limit" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Pagesize Limit for impressions</label>
+                    <comment>
+                        Enter number of products maximum user can see on the category page.
+                        Leave 0 for default
+                    </comment>
+                </field>
             </group>
         </section>
     </system>

@@ -11,8 +11,9 @@
 namespace Scandi\Gtm\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Theme\Block\Html\Pager;
 
 class Config
 {
@@ -27,25 +28,47 @@ class Config
      */
     protected $storeManager;
 
+    /**
+     * @var Toolbar
+     */
+    protected $toolbar;
+
+    /**
+     * @var Pager
+     */
+    protected $pager;
+
+    /**
+     * @var CategoryRepository
+     */
+    protected $category;
+
     const STORE_SCOPE = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
     const XML_PATH_MODULE_IS_ENABLED = 'scandi_gtm/general/enable';
     const XML_PATH_SCRIPT_IN_HEAD = 'scandi_gtm/general/store_in_head';
     const XML_PATH_CONT_ID = 'scandi_gtm/general/container_id';
     const XML_PATH_CATEGORY_SELECTOR = 'scandi_gtm/developer/category_wrapper';
     const XML_PATH_CHECKOUT_STEPS = 'scandi_gtm/developer/checkout_steps';
+    const XML_PATH_MAXIMUM_PRODUCTS = 'scandi_gtm/developer/pagesize_limit';
 
     /**
      * Config constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
+     * @param Pager $pager
+     * @param Toolbar $toolbar
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Pager $pager,
+        Toolbar $toolbar
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
+        $this->toolbar = $toolbar;
+        $this->pager = $pager;
     }
 
     /**
@@ -70,6 +93,23 @@ class Config
     public function getContId()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_CONT_ID, self::STORE_SCOPE);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImpressionsMaximum()
+    {
+        $config = $this->scopeConfig->getValue(self::XML_PATH_MAXIMUM_PRODUCTS, self::STORE_SCOPE);
+        if ($config) {
+            return $config;
+        }
+        if ($this->pager->getLimit() === $this->toolbar->getLimit()) {
+            return $this->pager->getLimit();
+        } else if ($this->pager->getLimit() < $this->toolbar->getLimit()) {
+            return $this->toolbar->getLimit();
+        }
+        return $this->pager->getLimit();
     }
 
     /**

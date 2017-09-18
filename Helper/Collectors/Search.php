@@ -11,9 +11,10 @@
 namespace Scandi\Gtm\Helper\Collectors;
 
 use Magento\Catalog\Block\Product\ListProduct;
-use Magento\Catalog\Block\Product\ProductList\Toolbar;
+use Magento\Framework\App\Request\Http;
 use Magento\Search\Helper\Data;
 use Magento\Theme\Block\Html\Pager;
+use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Price;
 
 class Search
@@ -25,7 +26,7 @@ class Search
     protected $listProduct;
 
     /**
-     * @var \Magento\Framework\App\Request\Http
+     * @var Http
      */
     protected $request;
 
@@ -35,9 +36,9 @@ class Search
     protected $pager;
 
     /**
-     * @var Toolbar
+     * @var Config
      */
-    protected $toolbar;
+    protected $config;
 
     /**
      * @var Data
@@ -55,23 +56,23 @@ class Search
      * Search constructor.
      * @param ListProduct $listProduct
      * @param Pager $pager
-     * @param Toolbar $toolbar
      * @param Data $searchHelper
      * @param Price $price
+     * @param Config $config
      */
     public function __construct(
         ListProduct $listProduct,
         Pager $pager,
-        Toolbar $toolbar,
         Data $searchHelper,
-        Price $price
+        Price $price,
+        Config $config
     )
     {
         $this->listProduct = $listProduct;
         $this->pager = $pager;
-        $this->toolbar = $toolbar;
         $this->searchHelper = $searchHelper;
         $this->price = $price;
+        $this->config = $config;
     }
 
     /**
@@ -89,7 +90,7 @@ class Search
     public function createImpressions()
     {
         $products = $this->listProduct->getLoadedProductCollection();
-        $products->setPageSize($this->getLimit())
+        $products->setPageSize($this->config->getImpressionsMaximum())
             ->setCurPage($this->pager->getCurrentPage());
         $i = 1;
         //TODO implement push of all data
@@ -104,18 +105,5 @@ class Search
             $i++;
         }
         return isset($impressions) ? $impressions : null;
-    }
-
-    /**
-     * @return int|string
-     */
-    private function getLimit()
-    {
-        if ($this->pager->getLimit() === $this->toolbar->getLimit()) {
-            return $this->pager->getLimit();
-        } else if ($this->pager->getLimit() < $this->toolbar->getLimit()) {
-            return $this->toolbar->getLimit();
-        }
-        return $this->pager->getLimit();
     }
 }
