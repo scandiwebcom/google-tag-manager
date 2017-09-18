@@ -96,6 +96,7 @@ class Product
     /**
      * @param $product
      * @param null $pageType
+     * @return string
      */
     public function collectProductData($product, $pageType = null)
     {
@@ -135,10 +136,10 @@ class Product
         $addData['event'] = $eventName;
         switch ($eventName) {
             case 'addToCart':
-                $addData['ecommerce']['add'] = $this->collectProductData($product);
+                $addData['ecommerce']['add']['products'] = $this->collectProductData($product);
                 break;
             case 'removeFromCart':
-                $addData['ecommerce']['remove'] = $this->collectProductData($product);
+                $addData['ecommerce']['remove']['products'] = $this->collectProductData($product);
                 break;
             default:
                 break;
@@ -160,7 +161,7 @@ class Product
 
     private function handleDetailsPush($productsDetails) {
         $push['event'] = 'details';
-        $push['ecommerce']['details'] = $productsDetails;
+        $push['ecommerce']['details']['products'] = $productsDetails;
         return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";
     }
 }
