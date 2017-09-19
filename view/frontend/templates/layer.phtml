@@ -7,9 +7,7 @@
  * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
  */
 
-/** @var $block \Scandi\Gtm\Block\DataLayer|\Scandi\Gtm\Block\Product|\Scandi\Gtm\Block\Search|\Scandi\Gtm\Block\Success */
+/** @var $block \Scandi\Gtm\Block\DataLayer|\Scandi\Gtm\Block\Search|\Scandi\Gtm\Block\Success */
 ?>
 
-<?php
-echo json_encode($block->collectLayer());
-?>
+<?= json_encode($block->collectLayer()); ?>

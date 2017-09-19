@@ -85,7 +85,7 @@ class Gtm extends Template
                     $dataLayer = $this->getChildHtml("gtm_head_prime");
                 }
                 return "<script>var dataLayer = [" . $dataLayer . "];</script>" .
-                    $this->dataLayer->gatherPushes() . $this->injectScript();
+                    $this->injectScript();
                 break;
             case 'body':
                 if ($this->configHelper->injectInHead()) {
@@ -96,7 +96,7 @@ class Gtm extends Template
                     $dataLayer = $this->getChildHtml("gtm_body_prime");
                 }
                 return "<script>var dataLayer = [" . $dataLayer . "];</script>" .
-                    $this->dataLayer->gatherPushes() . $this->injectScript();
+                    $this->injectScript();
                 break;
             default:
                 break;

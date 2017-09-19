@@ -10,9 +10,7 @@
 /** @var $block \Scandi\Gtm\Block\Gtm */
 ?>
 
-<?php
-echo $block->getGtm('head');
-?>
+<?= $block->getGtm('head'); ?>
 
 <!-- Product grid -->
 <script>
@@ -74,8 +72,6 @@ echo $block->getGtm('head');
         }
 
         function getCartUpdatePush() {
-            console.log('cart was updated');
-            console.log('<?= $block->getBaseUrl() . 'gtm/index/index' ?>');
             $.ajax({
                 url: '<?= $block->getBaseUrl() . 'gtm/index/index' ?>',
                 type: "POST",

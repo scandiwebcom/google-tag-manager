@@ -25,4 +25,7 @@
             <block class="Scandi\Gtm\Block\DataLayer" name="gtm_body_prime" template="layer.phtml"/>
         </referenceBlock>
     </body>
+    <referenceContainer name="before.body.end">
+        <block class="Scandi\Gtm\Block\Gtm" name="scandi_gtm_bottom" template="pushes.phtml"/>
+    </referenceContainer>
 </page>
