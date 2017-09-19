@@ -18,6 +18,7 @@ use Scandi\Gtm\Helper\Customer;
 use Scandi\Gtm\Helper\Collectors\Cart;
 use Scandi\Gtm\Helper\Collectors\Event;
 use Scandi\Gtm\Helper\Name;
+use Magento\Search\Helper\Data;
 
 class DataLayer extends DataLayerCollector
 {

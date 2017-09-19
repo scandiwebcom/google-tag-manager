@@ -21,14 +21,22 @@ class Checkout
     protected $config;
 
     /**
+     * @var Cart
+     */
+    protected $cart;
+
+    /**
      * Checkout constructor.
      * @param Config $config
+     * @param Cart $cart
      */
     public function __construct(
-        Config $config
+        Config $config,
+        Cart $cart
     )
     {
         $this->config = $config;
+        $this->cart = $cart;
     }
 
     /**
@@ -43,5 +51,10 @@ class Checkout
         }
         $steps = rtrim($steps, ',');
         return "<script>checkoutLayerSteps = [" . $steps . "]</script>";
+    }
+
+    public function getCart()
+    {
+        return "<script>cartData = " . json_encode($this->cart->collectCart()) . ";</script>";
     }
 }

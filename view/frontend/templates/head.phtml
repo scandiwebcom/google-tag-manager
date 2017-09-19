@@ -92,9 +92,16 @@
                     if (typeof(dataLayer) === 'undefined') {
                         return false;
                     }
-                    if (responce) {
-                        dataLayer.push(JSON.parse(responce));
+                    if (!responce) {
+                        return '';
                     }
+                    responce = JSON.parse(responce);
+                    if ('ecommerce' in responce) {
+                        if (typeof(cartData) !== 'undefined') {
+                            delete(responce['ecommerce']['cart']);
+                        }
+                    }
+                    dataLayer.push(responce);
                 }
             });
         }

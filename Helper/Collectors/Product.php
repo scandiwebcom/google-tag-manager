@@ -159,7 +159,8 @@ class Product
     }
 
 
-    private function handleDetailsPush($productsDetails) {
+    private function handleDetailsPush($productsDetails)
+    {
         $push['event'] = 'details';
         $push['ecommerce']['details']['products'] = $productsDetails;
         return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";

@@ -68,28 +68,25 @@ require(['jquery'],
 
         // Find cart data pushed on page render
         function getCart() {
-            for (var i = 0, len = dataLayer.length - 1; i < len; i++) {
-                if (dataLayer[i]["ecommerce"]["cart"] === undefined) {
-                    return getPushedCart();
-                }
-                var cart = dataLayer[i]["ecommerce"]["cart"];
-                // clean cart from ecommerce, as it would be pushed into the checkout data
-                delete(dataLayer[i]["ecommerce"]["cart"]);
-                return cart;
+            if (typeof(cartData) !== 'undefined') {
+                return cartData;
             }
+            return '';
         }
 
         // Find cart data that is pushed into event already
         function getPushedCart() {
-            for (var i = 0, len = dataLayer.length - 1; i < len; i++) {
-                if (dataLayer[i]['ecommerce'] === undefined) {
-                    continue;
-                }
-                if (dataLayer[i]['ecommerce']['checkout'] === undefined) {
-                    continue;
-                }
-                if (dataLayer[i]['ecommerce']['checkout']['products'] !== undefined) {
-                    return dataLayer[i]['ecommerce']['checkout']['products'];
+            while(true) {
+                for (var i = 0, len = dataLayer.length - 1; i < len; i++) {
+                    if (dataLayer[i]['ecommerce'] === undefined) {
+                        continue;
+                    }
+                    if (dataLayer[i]['ecommerce']['checkout'] === undefined) {
+                        continue;
+                    }
+                    if (dataLayer[i]['ecommerce']['checkout']['products'] !== undefined) {
+                        return dataLayer[i]['ecommerce']['checkout']['products'];
+                    }
                 }
             }
         }

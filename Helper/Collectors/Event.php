@@ -89,6 +89,7 @@ class Event
                 break;
             case 'checkout':
                 $pushes .= $this->checkout->getCheckoutSteps();
+                $pushes .= $this->checkout->getCart();
                 break;
             case 'product':
                 $pushes .= $this->product->createDetails();
