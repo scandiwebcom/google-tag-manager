@@ -12,6 +12,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <script src="Scandi_Gtm::js/gtm-checkout.js"/>
+        <script ifconfig="scandi_gtm/general/enable" src="Scandi_Gtm::js/gtm-checkout.js"/>
     </head>
 </page>

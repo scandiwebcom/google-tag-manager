@@ -37,7 +37,7 @@ require(['jquery'],
 
         // Check if dataLayer was initialised
         function isDataLayer() {
-            return typeof dataLayer;
+            return typeof(dataLayer) !== 'undefined';
         }
 
         // Get global with steps from the backend.

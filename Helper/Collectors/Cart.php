@@ -39,29 +39,11 @@ class Cart
         if ($this->quote->getItemsQty() == 0) {
             return null;
         }
-        $cartData["total"] = number_format($this->getCartTotal(), 2);
+        //Value will include discount if any exist
+        $cartData["total"] = number_format($this->quote->getGrandTotal(), 2);
         $cartData["qty"] = (int)$this->quote->getItemsQty();
         $cartData["products"] = $this->collectProducts($this->quote);
         return $cartData;
-    }
-
-    /**
-     * Function to handle the case when GrandTotal is returned without taxes
-     * @return float
-     */
-    public function getCartTotal()
-    {
-        switch ($this->quote->getGrandTotal() <=> $this->quote->getSubtotal()) {
-            case (1):
-                return $this->quote->getGrandTotal();
-                break;
-            case(0):
-                return $this->quote->getGrandTotal();
-                break;
-            case(-1):
-                return $this->quote->getSubtotal();
-                break;
-        }
     }
 
     /**
