@@ -43,7 +43,7 @@ require(['jquery'],
         // Get global with steps from the backend.
         // Generated in Scandi\Gtm\Helper\Collectors\Checkout->getCheckoutSteps;
         function getSteps() {
-            if (typeof checkoutLayerSteps !== 'undefined') {
+            if (typeof(checkoutLayerSteps) !== 'undefined') {
                 return checkoutLayerSteps;
             }
             else {
@@ -68,6 +68,8 @@ require(['jquery'],
 
         // Find cart data pushed on page render
         function getCart() {
+            // Get global with steps from the backend.
+            // Generated in Scandi\Gtm\Helper\Collectors\Checkout->getCart();
             if (typeof(cartData) !== 'undefined') {
                 return cartData;
             }

@@ -16,6 +16,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Scandi\Gtm\Block\Gtm;
+use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Name;
 
 class General extends Action
@@ -48,19 +49,22 @@ class General extends Action
      * @param JsonHelper $jsonHelper
      * @param Name $name
      * @param Gtm $gtm
+     * @param Config $config
      */
     public function __construct(
         Context $context,
         JsonFactory $jsonFactory,
         JsonHelper $jsonHelper,
         Name $name,
-        Gtm $gtm
+        Gtm $gtm,
+        Config $config
     )
     {
         $this->jsonFactory = $jsonFactory;
         $this->jsonHelper = $jsonHelper;
         $this->name = $name;
         $this->gtm = $gtm;
+        $this->config = $config;
         parent::__construct($context);
     }
 
@@ -70,6 +74,9 @@ class General extends Action
      */
     public function execute()
     {
+        if (!$this->config->isEnabled()) {
+            throw new NotFoundException(__('Module is disabled'));
+        }
         if (!$this->getRequest()->isAjax()) {
             throw new NotFoundException(__('Usage is incorrect'));
         }

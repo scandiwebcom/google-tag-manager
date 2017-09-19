@@ -16,6 +16,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Scandi\Gtm\Helper\Config;
 
 class Cart extends Action
 {
@@ -36,22 +37,30 @@ class Cart extends Action
     protected $jsonHelper;
 
     /**
-     * Index constructor.
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * Cart constructor.
      * @param Context $context
      * @param CustomerSession $customerSession
      * @param JsonFactory $jsonFactory
      * @param JsonHelper $jsonHelper
+     * @param Config $config
      */
     public function __construct(
         Context $context,
         CustomerSession $customerSession,
         JsonFactory $jsonFactory,
-        JsonHelper $jsonHelper
+        JsonHelper $jsonHelper,
+        Config $config
     )
     {
         $this->jsonFactory = $jsonFactory;
         $this->customerSession = $customerSession;
         $this->jsonHelper = $jsonHelper;
+        $this->config = $config;
         parent::__construct($context);
     }
 
@@ -61,6 +70,9 @@ class Cart extends Action
      */
     public function execute()
     {
+        if (!$this->config->isEnabled()) {
+            throw new NotFoundException(__('Extension is disabled'));
+        }
         if (!$this->getRequest()->isAjax()) {
             throw new NotFoundException(__('Usage is incorrect'));
         }

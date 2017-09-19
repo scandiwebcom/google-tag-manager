@@ -48,7 +48,7 @@ define([
                 },
                 success: function (res) {
 
-                    if (dataLayer !== undefined) {
+                    if (typeof(dataLayer) !== "undefined") {
                         dataLayer.push(res['eventPush']);
                     }
                     if (self.isLoaderEnabled()) {

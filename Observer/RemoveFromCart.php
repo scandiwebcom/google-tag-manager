@@ -14,6 +14,7 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Scandi\Gtm\Helper\Collectors\Product;
+use Scandi\Gtm\Helper\Config;
 
 /**
  * Class AddToCart
@@ -31,17 +32,25 @@ class RemoveFromCart implements ObserverInterface
     protected $product;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * RemoveFromCart constructor.
      * @param CustomerSession $customerSession
      * @param Product $product
+     * @param Config $config
      */
     public function __construct(
         CustomerSession $customerSession,
-        Product $product
+        Product $product,
+        Config $config
     )
     {
         $this->customerSession = $customerSession;
         $this->product = $product;
+        $this->config = $config;
     }
 
     /**
@@ -49,9 +58,11 @@ class RemoveFromCart implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $product = $observer->getEvent()->getQuoteItem();
-        $addData['event'] = 'removeFromCart';
-        $addData['ecommerce']['remove']['products'] = $this->product->collectProductData($product);
-        $this->customerSession->setRemoveFromCart(json_encode($addData));
+        if ($this->config->isEnabled()) {
+            $product = $observer->getEvent()->getQuoteItem();
+            $addData['event'] = 'removeFromCart';
+            $addData['ecommerce']['remove']['products'] = $this->product->collectProductData($product);
+            $this->customerSession->setRemoveFromCart(json_encode($addData));
+        }
     }
 }

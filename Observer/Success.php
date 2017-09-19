@@ -13,7 +13,7 @@ namespace Scandi\Gtm\Observer;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Sales\Model\OrderRepository;
+use Scandi\Gtm\Helper\Config;
 
 /**
  * Class AddToCart
@@ -21,26 +21,27 @@ use Magento\Sales\Model\OrderRepository;
  */
 class Success implements ObserverInterface
 {
+
     /** @var CheckoutSession */
     protected $checkoutSession;
 
     /**
-     * @var \Magento\Sales\Api\Data\OrderInterface
+     * @var Config
      */
-    protected $order;
+    protected $config;
 
     /**
      * Success constructor.
-     * @param OrderRepository $order
-     * @param CheckoutSession $checkoutSession ]
+     * @param CheckoutSession $checkoutSession
+     * @param Config $config
      */
     public function __construct(
-        OrderRepository $order,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        Config $config
     )
     {
-        $this->order = $order;
         $this->checkoutSession = $checkoutSession;
+        $this->config = $config;
     }
 
     /**
@@ -48,7 +49,9 @@ class Success implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $orderData['order_id'] = $observer->getEvent()->getOrderIds()[0];
-        $this->checkoutSession->setGtmSuccess(json_encode($orderData));
+        if ($this->config->isEnabled()) {
+            $orderData['order_id'] = $observer->getEvent()->getOrderIds()[0];
+            $this->checkoutSession->setGtmSuccess(json_encode($orderData));
+        }
     }
 }

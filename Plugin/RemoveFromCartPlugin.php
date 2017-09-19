@@ -13,6 +13,7 @@ namespace Scandi\Gtm\Plugin;
 use Magento\Checkout\Controller\Sidebar\RemoveItem;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Json\Helper\Data;
+use Scandi\Gtm\Helper\Config;
 
 class RemoveFromCartPlugin
 {
@@ -28,15 +29,23 @@ class RemoveFromCartPlugin
     protected $customerSession;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * RemoveFromCartPlugin constructor.
      * @param Data $jsonHelper
      * @param Session $customerSession
+     * @param Config $config
      */
     public function __construct(
         Data $jsonHelper,
-        Session $customerSession
+        Session $customerSession,
+        Config $config
     )
     {
+        $this->config = $config;
         $this->jsonHelper = $jsonHelper;
         $this->customerSession = $customerSession;
     }
@@ -48,6 +57,9 @@ class RemoveFromCartPlugin
      */
     public function afterExecute(RemoveItem $subject, $result)
     {
+        if (!$this->config->isEnabled()) {
+            return $result;
+        }
         $content = $this->jsonHelper->jsonDecode($subject->getResponse()->getContent());
         if (!array_key_exists('success', $content)) {
             return $result;

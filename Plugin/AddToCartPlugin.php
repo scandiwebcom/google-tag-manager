@@ -16,6 +16,7 @@ use Magento\Framework\Json\Helper\Data;
 use Magento\Store\Model\StoreManagerInterface;
 use Scandi\Gtm\Helper\Collectors\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Scandi\Gtm\Helper\Config;
 
 class AddToCartPlugin
 {
@@ -41,23 +42,31 @@ class AddToCartPlugin
     protected $storeManager;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * AddToCartPlugin constructor.
      * @param Product $product
      * @param Data $jsonHelper
      * @param ProductRepository $productRepository
      * @param StoreManagerInterface $storeManager
+     * @param Config $config
      */
     public function __construct(
         Product $product,
         Data $jsonHelper,
         ProductRepository $productRepository,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        Config $config
     )
     {
         $this->product = $product;
         $this->jsonHelper = $jsonHelper;
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
+        $this->config = $config;
     }
 
     /**
@@ -67,6 +76,9 @@ class AddToCartPlugin
      */
     public function afterExecute(Add $subject, $result)
     {
+        if (!$this->config->isEnabled()) {
+            return $result;
+        }
         if (!$subject->getResponse()->getStatusCode() === 200) {
             return $result;
         }

@@ -14,6 +14,7 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Scandi\Gtm\Helper\Collectors\Product;
+use Scandi\Gtm\Helper\Config;
 
 /**
  * Class AddToCart
@@ -33,17 +34,25 @@ class AddToCart implements ObserverInterface
     protected $product;
 
     /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * AddToCart constructor.
      * @param CustomerSession $customerSession
      * @param Product $product
+     * @param Config $config
      */
     public function __construct(
         CustomerSession $customerSession,
-        Product $product
+        Product $product,
+        Config $config
     )
     {
         $this->customerSession = $customerSession;
         $this->product = $product;
+        $this->config = $config;
     }
 
     /**
@@ -51,10 +60,12 @@ class AddToCart implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (!$observer->getRequest()->isAjax()) {
-            $product = $observer->getProduct();
-            $this->customerSession->setAddToCart(
-                json_encode($this->product->collectCartEvent($product, 'addToCart')));
+        if ($this->config->isEnabled()){
+            if (!$observer->getRequest()->isAjax()) {
+                $product = $observer->getProduct();
+                $this->customerSession->setAddToCart(
+                    json_encode($this->product->collectCartEvent($product, 'addToCart')));
+            }
         }
     }
 }
