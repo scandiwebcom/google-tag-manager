@@ -13,11 +13,11 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <!--<referenceBlock name="gtm_head" remove="true"/>-->
     <referenceBlock name="scandi_gtm_head">
-        <block class="Scandi\Gtm\Block\Search" name="gtm_head" template="layer.phtml" cacheable="false"/>
+        <block class="Scandi\Gtm\Block\Search" name="gtm_head" template="layer.phtml"/>
     </referenceBlock>
     <body>
         <referenceBlock name="scandi_gtm_body">
-            <block class="Scandi\Gtm\Block\Search" name="gtm_body" template="layer.phtml" cacheable="false"/>
+            <block class="Scandi\Gtm\Block\Search" name="gtm_body" template="layer.phtml"/>
         </referenceBlock>
     </body>
 </page>

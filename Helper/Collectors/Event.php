@@ -74,6 +74,7 @@ class Event
 
     /**
      * Method to handle all possible pushes
+     * @param null $pageName
      * @return string
      */
     public function gatherPushes($pageName = null)

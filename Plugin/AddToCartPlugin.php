@@ -11,6 +11,7 @@
 namespace Scandi\Gtm\Plugin;
 
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Checkout\Controller\Cart\Add;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Store\Model\StoreManagerInterface;
 use Scandi\Gtm\Helper\Collectors\Product;
@@ -60,11 +61,11 @@ class AddToCartPlugin
     }
 
     /**
-     * @param \Magento\Checkout\Controller\Cart\Add $subject
+     * @param Add $subject
      * @param $result
      * @return bool
      */
-    public function afterExecute(\Magento\Checkout\Controller\Cart\Add $subject, $result)
+    public function afterExecute(Add $subject, $result)
     {
         if (!$subject->getResponse()->getStatusCode() === 200) {
             return $result;

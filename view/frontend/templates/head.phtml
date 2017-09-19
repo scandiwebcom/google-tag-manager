@@ -17,7 +17,8 @@ echo $block->getGtm('head');
 <!-- Product grid -->
 <script>
     require(['jquery', 'jquery/ui'], function ($) {
-        jQuery(document).ready(function () {
+        $(document).ready(function () {
+            getCartUpdatePush();
             var i = 1;
             var items = jQuery('<?php echo $block->configHelper->getCategoryWrapper(); ?>');
             if (items) {
@@ -70,6 +71,25 @@ echo $block->getGtm('head');
                 }
             }
             return false;
+        }
+
+        function getCartUpdatePush() {
+            console.log('cart was updated');
+            console.log('<?= $block->getBaseUrl() . 'gtm/index/index' ?>');
+            $.ajax({
+                url: '<?= $block->getBaseUrl() . 'gtm/index/index' ?>',
+                type: "POST",
+                showLoader: false,
+                dataType: "json",
+                success: function(responce) {
+                    if (typeof(dataLayer) === 'undefined') {
+                        return false;
+                    }
+                    if (responce) {
+                        dataLayer.push(JSON.parse(responce));
+                    }
+                }
+            });
         }
     });
 </script>

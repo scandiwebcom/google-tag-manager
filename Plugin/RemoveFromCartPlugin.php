@@ -10,6 +10,7 @@
 
 namespace Scandi\Gtm\Plugin;
 
+use Magento\Checkout\Controller\Sidebar\RemoveItem;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Json\Helper\Data;
 
@@ -41,11 +42,11 @@ class RemoveFromCartPlugin
     }
 
     /**
-     * @param \Magento\Checkout\Controller\Sidebar\RemoveItem $subject
+     * @param RemoveItem $subject
      * @param $result
      * @return mixed
      */
-    public function afterExecute(\Magento\Checkout\Controller\Sidebar\RemoveItem $subject, $result)
+    public function afterExecute(RemoveItem $subject, $result)
     {
         $content = $this->jsonHelper->jsonDecode($subject->getResponse()->getContent());
         if (!array_key_exists('success', $content)) {

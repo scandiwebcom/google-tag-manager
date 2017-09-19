@@ -12,17 +12,17 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <referenceBlock name="head.additional">
-        <block class="Scandi\Gtm\Block\Gtm" name="scandi_gtm_head" template="head.phtml" cacheable="false"/>
+        <block class="Scandi\Gtm\Block\Gtm" name="scandi_gtm_head" template="head.phtml"/>
     </referenceBlock>
     <referenceContainer name="after.body.start">
-        <block class="Scandi\Gtm\Block\Gtm" name="scandi_gtm_body" template="body.phtml" cacheable="false"/>
+        <block class="Scandi\Gtm\Block\Gtm" name="scandi_gtm_body" template="body.phtml"/>
     </referenceContainer>
     <referenceBlock name="scandi_gtm_head">
-        <block class="Scandi\Gtm\Block\DataLayer" name="gtm_head_prime" template="layer.phtml" cacheable="false"/>
+        <block class="Scandi\Gtm\Block\DataLayer" name="gtm_head_prime" template="layer.phtml"/>
     </referenceBlock>
     <body>
         <referenceBlock name="scandi_gtm_body">
-            <block class="Scandi\Gtm\Block\DataLayer" name="gtm_body_prime" template="layer.phtml" cacheable="false"/>
+            <block class="Scandi\Gtm\Block\DataLayer" name="gtm_body_prime" template="layer.phtml"/>
         </referenceBlock>
     </body>
 </page>
