@@ -10,11 +10,11 @@ composer config repositories.scandiweb-module-core git git@github.com:scandiwebc
 composer require scandiweb/module-core:~0.1.2
 ```
 
-Add the exrension by running
+Add the extension by running
 
 ```
 composer config repositories.scandi-google-tag-manager git git@github.com:scandiwebcom/google-tag-manager.git
-composer require scandiwebcom/google-tag-manager:1.0.7
+composer require scandiwebcom/google-tag-manager:1.0.8
 php -f bin/magento setup:upgrade
 ```
 ## Configuration
@@ -30,10 +30,18 @@ Go to the Stores -> Configurations -> Scandiweb -> Google Tag Manager from the a
 4. Ensure you have jQuery selector which will be able to get all the products items on the category page 
 ('ol.product-items > li.item.product-item' by default);
 
-5. Configure your steps of the checkout, leave blank if one step checkout is used.
+5. Configure your steps of the checkout, leave blank if one step checkout is used;
 
-6. Clean cache and refresh the main page, inspect the page and search for 'Google Tag Manager'. 
+6. Leave field "Pagesize Limit for impressions" blank for now;
+
+7. Clean cache and refresh the main page, inspect the page and search for 'Google Tag Manager'. 
 It should be injected on the page;
 
-7. Then open the browser console and type dataLayer (variable is case-sensitive). If object is returned - 
-then you may open a bottle of wine and use it.
+8. Then open the browser console and type dataLayer (variable is case-sensitive) you should see object of dataLayer;
+
+9. Go to the category page and check if amount of impressions are pushed correctly. If there is a difference from the 
+expected amount - go to the configurations and enter maximum amount of products user can see on one category page in the
+"Pagesize Limit for impressions" -> Drop caches;
+
+    9.1. If you have amount switchers user can see on the category or search pages, and amount is pushed incorrectly,
+    please contact aleksejt@scandiweb.com in order to report the problem.
