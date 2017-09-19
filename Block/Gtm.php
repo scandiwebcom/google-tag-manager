@@ -14,9 +14,16 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Script;
+use Magento\Framework\App\Request\Http;
+use Magento\Theme\Block\Html\Header\Logo;
 
 class Gtm extends Template
 {
+
+    /**
+     * @var Http
+     */
+    public $request;
 
     /**
      * @var DataLayer
@@ -34,23 +41,34 @@ class Gtm extends Template
     protected $script;
 
     /**
+     * @var Logo
+     */
+    public $logo;
+
+    /**
      * Gtm constructor.
      * @param Context $context
      * @param DataLayer $dataLayer
      * @param Config $configHelper
      * @param Script $script
+     * @param Http $request
+     * @param Logo $logo
      */
     public function __construct(
         Context $context,
         DataLayer $dataLayer,
         Config $configHelper,
-        Script $script
+        Script $script,
+        Http $request,
+        Logo $logo
     )
     {
         parent::__construct($context);
         $this->configHelper = $configHelper;
         $this->script = $script;
         $this->dataLayer = $dataLayer;
+        $this->request = $request;
+        $this->logo = $logo;
     }
 
     /**
@@ -80,22 +98,14 @@ class Gtm extends Template
                 if (!$this->configHelper->injectInHead()) {
                     return '';
                 }
-                $dataLayer = $this->getChildHtml("gtm_head");
-                if (empty($dataLayer)) {
-                    $dataLayer = $this->getChildHtml("gtm_head_prime");
-                }
-                return "<script>var dataLayer = [" . $dataLayer . "];</script>" .
+                return "<script>var dataLayer = [];</script>" .
                     $this->injectScript();
                 break;
             case 'body':
                 if ($this->configHelper->injectInHead()) {
                     return '';
                 }
-                $dataLayer = $this->getChildHtml("gtm_body");
-                if (empty($dataLayer)) {
-                    $dataLayer = $this->getChildHtml("gtm_body_prime");
-                }
-                return "<script>var dataLayer = [" . $dataLayer . "];</script>" .
+                return "<script>var dataLayer = [];</script>" .
                     $this->injectScript();
                 break;
             default:

@@ -17,7 +17,7 @@ use Magento\Framework\Exception\NotFoundException;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 
-class Index extends Action
+class Cart extends Action
 {
 
     /**

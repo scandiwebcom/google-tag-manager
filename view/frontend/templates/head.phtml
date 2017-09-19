@@ -16,6 +16,7 @@
 <script>
     require(['jquery', 'jquery/ui'], function ($) {
         $(document).ready(function () {
+            getGeneralData();
             getCartUpdatePush();
             var i = 1;
             var items = jQuery('<?php echo $block->configHelper->getCategoryWrapper(); ?>');
@@ -33,6 +34,11 @@
             }
         });
 
+        /**
+         * Handle product click and push it to the layer
+         * @param el
+         * @returns {boolean}
+         */
         function productClick(el) {
             var clickedProduct = jQuery(el).attr('number');
             var i, len;
@@ -71,12 +77,17 @@
             return false;
         }
 
-        function getCartUpdatePush() {
+        /**
+         * Handle ajax to get data for the dataLayer
+         * @param urlPart
+         */
+        function getDataForPush(urlPart) {
             $.ajax({
-                url: '<?= $block->getBaseUrl() . 'gtm/index/index' ?>',
+                url: '<?= $block->getBaseUrl() ?>' + urlPart,
                 type: "POST",
                 showLoader: false,
                 dataType: "json",
+                data: {"page": "<?= $block->request->getFullActionName() ?>", "isMain": "<?= $block->logo->isHomePage() ?>"},
                 success: function(responce) {
                     if (typeof(dataLayer) === 'undefined') {
                         return false;
@@ -86,6 +97,20 @@
                     }
                 }
             });
+        }
+
+        /**
+         * Serve the controller url to get cart events
+         */
+        function getCartUpdatePush() {
+            getDataForPush('gtm/index/cart');
+        }
+
+        /**
+         * Serve the controller url to get general layer
+         */
+        function getGeneralData() {
+            getDataForPush('gtm/index/general');
         }
     });
 </script>

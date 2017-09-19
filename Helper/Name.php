@@ -32,9 +32,10 @@ class Name
 
     /**
      * @param $pageName
+     * @param bool $isMain
      * @return mixed|string
      */
-    public function getEccomPageName($pageName)
+    public function getEccomPageName($pageName, $isMain = false)
     {
         $pageNames = [
             'cms_index_index' => 'homepage',
@@ -46,7 +47,7 @@ class Name
             'catalogsearch_result_index' => 'search_result',
             'checkout_cart_index' => 'cart'
         ];
-        return $this->isPageInList($pageNames, $pageName) ? $pageNames[$pageName] : 'default';
+        return $this->isPageInList($pageNames, $pageName, $isMain) ? $pageNames[$pageName] : 'default';
     }
 
     /**
@@ -54,11 +55,11 @@ class Name
      * @param $pageName
      * @return bool
      */
-    private function isPageInList($pageNames, $pageName)
+    private function isPageInList($pageNames, $pageName, $isMain)
     {
         if (!array_key_exists($pageName, $pageNames)) {
             return false;
         }
-        return $pageName !== 'cms_index_index' || $this->logo->isHomePage();
+        return $pageName !== 'cms_index_index' || $isMain;
     }
 }
