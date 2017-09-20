@@ -16,6 +16,7 @@ use Magento\Search\Helper\Data;
 use Magento\Theme\Block\Html\Pager;
 use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Price;
+use Magento\Framework\Json\Helper\Data as JsonHelper;
 
 class Search
 {
@@ -50,6 +51,11 @@ class Search
      */
     protected $price;
 
+    /**
+     * @var JsonHelper
+     */
+    protected $jsonHelper;
+
     const PAGE_TYPE = 'Search Result';
 
     /**
@@ -59,13 +65,15 @@ class Search
      * @param Data $searchHelper
      * @param Price $price
      * @param Config $config
+     * @param JsonHelper $jsonHelper
      */
     public function __construct(
         ListProduct $listProduct,
         Pager $pager,
         Data $searchHelper,
         Price $price,
-        Config $config
+        Config $config,
+        JsonHelper $jsonHelper
     )
     {
         $this->listProduct = $listProduct;
@@ -73,15 +81,16 @@ class Search
         $this->searchHelper = $searchHelper;
         $this->price = $price;
         $this->config = $config;
+        $this->jsonHelper = $jsonHelper;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function collectSearch()
+    public function getKeywordPush()
     {
-        $search['keyword'] = $this->searchHelper->getEscapedQueryText();
-        return $search;
+        $search['ecommerce']['keyword'] = $this->searchHelper->getEscapedQueryText();
+        return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($search) . ")</script>";
     }
 
     /**

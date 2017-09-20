@@ -47,6 +47,11 @@ class Event
     protected $success;
 
     /**
+     * Value of imressions per push from the GTM documentation
+     */
+    const IMPRESSIONS_LIMIT = 50;
+
+    /**
      * Event constructor.
      * @param Session $customerSession
      * @param Category $category
@@ -86,6 +91,7 @@ class Event
                 break;
             case 'search_result':
                 $impressionsPush = $this->search->createImpressions();
+                $keywordPush = $this->search->getKeyWordPush();
                 break;
             case 'checkout':
                 $pushes .= $this->checkout->getCheckoutSteps();
@@ -102,6 +108,9 @@ class Event
         }
         if (isset($impressionsPush)) {
             $pushes .= $this->handleImpressions($impressionsPush);
+        }
+        if (isset($keywordPush)) {
+            $pushes .= $keywordPush;
         }
         return $pushes;
     }
@@ -129,10 +138,8 @@ class Event
      */
     public function handleImpressions($impressions)
     {
-        //Limited value of impressions in one push
-        $limit = 50;
         $pushes = '';
-        $chunkedForPush = array_chunk($impressions, $limit);
+        $chunkedForPush = array_chunk($impressions, self::IMPRESSIONS_LIMIT);
         foreach ($chunkedForPush as $push) {
             $tmp['ecommerce']['impressions'] = $push;
             $push = json_encode($tmp);
