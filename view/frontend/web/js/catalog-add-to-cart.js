@@ -49,7 +49,7 @@ define([
                 success: function (res) {
 
                     if (typeof(dataLayer) !== "undefined") {
-                        if ('eventPush' in dataLayer) {
+                        if ('eventPush' in res) {
                             dataLayer.push(res['eventPush']);
                         }
                     }
