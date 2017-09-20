@@ -32,7 +32,7 @@ require([
          * @private
          */
         _removeItemAfter: function (elem, response) {
-            if (typeof(dataLayer) !== "undefined" && response['eventPush']) {
+            if (typeof(dataLayer) !== "undefined" && 'eventPush' in response) {
                 dataLayer.push(response['eventPush']);
             }
         },

@@ -49,7 +49,9 @@ define([
                 success: function (res) {
 
                     if (typeof(dataLayer) !== "undefined") {
-                        dataLayer.push(res['eventPush']);
+                        if ('eventPush' in dataLayer) {
+                            dataLayer.push(res['eventPush']);
+                        }
                     }
                     if (self.isLoaderEnabled()) {
                         $('body').trigger(self.options.processStop);
