@@ -17,6 +17,10 @@ use Magento\Theme\Block\Html\Pager;
 use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Price;
 
+/**
+ * Class Category
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Category
 {
 

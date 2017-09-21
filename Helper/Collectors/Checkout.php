@@ -12,6 +12,10 @@ namespace Scandi\Gtm\Helper\Collectors;
 
 use Scandi\Gtm\Helper\Config;
 
+/**
+ * Class Checkout
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Checkout
 {
 

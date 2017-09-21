@@ -10,19 +10,22 @@
 
 namespace Scandi\Gtm\Helper\Collectors;
 
-use Magento\Catalog\Block\Product\View\AbstractView;
+use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Framework\Registry;
 use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Price;
 
-
+/**
+ * Class Product
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Product
 {
 
     /**
-     * @var AbstractView
+     * @var View
      */
     protected $view;
 
@@ -58,7 +61,7 @@ class Product
 
     /**
      * Product constructor.
-     * @param AbstractView $view
+     * @param View $view
      * @param Registry $registry
      * @param Category $category
      * @param ProductRepository $productRepository
@@ -67,7 +70,7 @@ class Product
      * @param Data $jsonHelper
      */
     public function __construct(
-        AbstractView $view,
+        View $view,
         Registry $registry,
         Category $category,
         ProductRepository $productRepository,

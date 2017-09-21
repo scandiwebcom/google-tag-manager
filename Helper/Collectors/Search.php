@@ -18,6 +18,10 @@ use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Price;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 
+/**
+ * Class Search
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Search
 {
 

@@ -15,7 +15,10 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Sales\Model\OrderRepository;
 
-
+/**
+ * Class Success
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Success
 {
 

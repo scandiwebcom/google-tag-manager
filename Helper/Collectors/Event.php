@@ -13,6 +13,10 @@ namespace Scandi\Gtm\Helper\Collectors;
 use Magento\Customer\Model\Session;
 use Scandi\Gtm\Helper\Collectors\Product as GTMProduct;
 
+/**
+ * Class Event
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Event
 {
 

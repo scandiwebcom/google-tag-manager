@@ -12,6 +12,10 @@ namespace Scandi\Gtm\Helper\Collectors;
 
 use Magento\Checkout\Model\Session;
 
+/**
+ * Class Cart
+ * @package Scandi\Gtm\Helper\Collectors
+ */
 class Cart
 {
 

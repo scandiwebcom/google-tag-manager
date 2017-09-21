@@ -18,6 +18,10 @@ use Scandi\Gtm\Helper\Collectors\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Scandi\Gtm\Helper\Config;
 
+/**
+ * Class AddToCartPlugin
+ * @package Scandi\Gtm\Plugin
+ */
 class AddToCartPlugin
 {
 

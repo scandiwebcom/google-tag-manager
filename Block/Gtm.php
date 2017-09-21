@@ -17,6 +17,10 @@ use Scandi\Gtm\Helper\Script;
 use Magento\Framework\App\Request\Http;
 use Magento\Theme\Block\Html\Header\Logo;
 
+/**
+ * Class Gtm
+ * @package Scandi\Gtm\Block
+ */
 class Gtm extends Template
 {
 

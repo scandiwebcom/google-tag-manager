@@ -18,6 +18,10 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Scandi\Gtm\Helper\Config;
 
+/**
+ * Class Cart
+ * @package Scandi\Gtm\Controller\Index
+ */
 class Cart extends Action
 {
 

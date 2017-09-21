@@ -19,6 +19,10 @@ use Scandi\Gtm\Block\Gtm;
 use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Name;
 
+/**
+ * Class General
+ * @package Scandi\Gtm\Controller\Index
+ */
 class General extends Action
 {
 

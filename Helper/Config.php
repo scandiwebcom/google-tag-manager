@@ -15,6 +15,10 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Block\Product\ProductList\Toolbar;
 use Magento\Theme\Block\Html\Pager;
 
+/**
+ * Class Config
+ * @package Scandi\Gtm\Helper
+ */
 class Config
 {
 

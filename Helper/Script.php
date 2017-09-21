@@ -10,6 +10,10 @@
 
 namespace Scandi\Gtm\Helper;
 
+/**
+ * Class Script
+ * @package Scandi\Gtm\Helper
+ */
 class Script
 {
 

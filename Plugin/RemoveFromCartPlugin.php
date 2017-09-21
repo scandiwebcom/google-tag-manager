@@ -15,6 +15,10 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\Json\Helper\Data;
 use Scandi\Gtm\Helper\Config;
 
+/**
+ * Class RemoveFromCartPlugin
+ * @package Scandi\Gtm\Plugin
+ */
 class RemoveFromCartPlugin
 {
 

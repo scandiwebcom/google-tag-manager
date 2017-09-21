@@ -12,6 +12,10 @@ namespace Scandi\Gtm\Helper;
 
 use Magento\Theme\Block\Html\Header\Logo;
 
+/**
+ * Class Name
+ * @package Scandi\Gtm\Helper
+ */
 class Name
 {
     /**

@@ -20,6 +20,10 @@ use Scandi\Gtm\Helper\Collectors\Event;
 use Scandi\Gtm\Helper\Name;
 use Magento\Search\Helper\Data;
 
+/**
+ * Class DataLayer
+ * @package Scandi\Gtm\Block
+ */
 class DataLayer extends DataLayerCollector
 {
 

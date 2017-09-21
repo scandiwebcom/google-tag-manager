@@ -10,6 +10,10 @@
 
 namespace Scandi\Gtm\Helper;
 
+/**
+ * Class Price
+ * @package Scandi\Gtm\Helper
+ */
 class Price
 {
 

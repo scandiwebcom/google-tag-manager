@@ -10,6 +10,10 @@
 
 namespace Scandi\Gtm\Helper;
 
+/**
+ * Class Customer
+ * @package Scandi\Gtm\Helper
+ */
 class Customer
 {
 
