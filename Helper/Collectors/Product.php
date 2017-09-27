@@ -139,10 +139,10 @@ class Product
         $addData['event'] = $eventName;
         switch ($eventName) {
             case 'addToCart':
-                $addData['ecommerce']['add']['products'] = $this->collectProductData($product);
+                $addData['ecommerce']['add']['products'] = array($this->collectProductData($product));
                 break;
             case 'removeFromCart':
-                $addData['ecommerce']['remove']['products'] = $this->collectProductData($product);
+                $addData['ecommerce']['remove']['products'] = array($this->collectProductData($product));
                 break;
             default:
                 break;
@@ -165,7 +165,7 @@ class Product
     private function handleDetailsPush($productsDetails)
     {
         $push['event'] = 'details';
-        $push['ecommerce']['details']['products'] = $productsDetails;
+        $push['ecommerce']['details']['products'] = array($productsDetails);
         return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";
     }
 }

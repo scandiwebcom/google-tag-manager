@@ -61,7 +61,7 @@ class RemoveFromCart implements ObserverInterface
         if ($this->config->isEnabled()) {
             $product = $observer->getEvent()->getQuoteItem();
             $addData['event'] = 'removeFromCart';
-            $addData['ecommerce']['remove']['products'] = $this->product->collectProductData($product);
+            $addData['ecommerce']['remove']['products'] = array($this->product->collectProductData($product));
             $this->customerSession->setRemoveFromCart(json_encode($addData));
         }
     }

@@ -59,6 +59,6 @@ class Checkout
 
     public function getCart()
     {
-        return "<script>cartData = " . json_encode($this->cart->collectCart()) . ";</script>";
+        return "<script>cartData = " . json_encode($this->cart->collectProducts($this->cart->quote)) . ";</script>";
     }
 }
