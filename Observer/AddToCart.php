@@ -60,6 +60,7 @@ class AddToCart implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        $params = $observer->getRequest()->getParams();
         if ($this->config->isEnabled()){
             if (!$observer->getRequest()->isAjax()) {
                 $product = $observer->getProduct();

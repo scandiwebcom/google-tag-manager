@@ -58,7 +58,8 @@ require(['jquery'],
                 'ecommerce': {
                     'checkout': {
                         'actionField': {
-                            'step': detectCheckoutStep()
+                            'step': detectCheckoutStep(),
+                            'option': 'selected_by_user'
                         },
                         'products': getCart()
                     }

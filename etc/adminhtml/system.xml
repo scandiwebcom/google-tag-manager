@@ -62,6 +62,10 @@
                         Leave 0 for default
                     </comment>
                 </field>
+                <field id="brand" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Brand to be pushed with all products</label>
+                </field>
             </group>
         </section>
     </system>

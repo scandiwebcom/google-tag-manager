@@ -139,6 +139,7 @@ class Success
      */
     public function gatherProducts($order)
     {
+        $brand = $this->category->config->getBrand();
         foreach ($order->getAllItems() as $product) {
             if ((int)$product->getPrice() == 0) {
                 continue;
@@ -149,7 +150,12 @@ class Success
                 "id" => $product->getSku(),
                 "price" => $product->getPrice(),
                 "category" => $this->category->getCategoryName($categories),
-                "quantity" => $product->getQtyOrdered()
+                "quantity" => $product->getQtyOrdered(),
+                "dimension1" => "parent_color",
+                "dimension2" => "child_sku",
+                "variant" => "child_size",
+                "brand" => $brand,
+                "affiliate" => "to be requested"
             ];
         }
         return isset($productsData) ? $productsData : false;

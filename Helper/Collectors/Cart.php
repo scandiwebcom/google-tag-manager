@@ -10,7 +10,9 @@
 
 namespace Scandi\Gtm\Helper\Collectors;
 
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Session;
+use Scandi\Gtm\Helper\Configurable;
 
 /**
  * Class Cart
@@ -25,14 +27,30 @@ class Cart
     protected $checkoutSession;
 
     /**
+     * @var ProductRepository
+     */
+    protected $productRepository;
+
+    /**
+     * @var Configurable
+     */
+    protected $configurable;
+
+    /**
      * Cart constructor.
      * @param Session $checkoutSession
+     * @param ProductRepository $productRepository
+     * @param Configurable $configurable
      */
     public function __construct(
-        Session $checkoutSession
+        Session $checkoutSession,
+        ProductRepository $productRepository,
+        Configurable $configurable
     )
     {
         $this->quote = $checkoutSession->getQuote();
+        $this->productRepository = $productRepository;
+        $this->configurable = $configurable;
     }
 
     /**
@@ -45,8 +63,8 @@ class Cart
         }
         //Value will include discount if any exist
         $cartData["total"] = number_format($this->quote->getGrandTotal(), 2);
-        $cartData["qty"] = (int) $this->quote->getItemsQty();
-        $cartData["qty"] = (string) ($cartData['qty']);
+        $cartData["qty"] = (int)$this->quote->getItemsQty();
+        $cartData["qty"] = (string)($cartData['qty']);
         $cartData["products"] = $this->collectProducts($this->quote);
         return $cartData;
     }
@@ -57,18 +75,28 @@ class Cart
      */
     public function collectProducts($quote)
     {
+        $brand = $this->configurable->config->getBrand();
         foreach ($quote->getAllItems() as $product) {
             // Sort out simple products in the configurable or bundled
             if ($product->getData("price_incl_tax") == 0) {
+                continue;
+            }
+            if ($product->getProductType() === 'configurable') {
+                $productsData[] = $this->configurable->getProductData($product);
                 continue;
             }
             $productsData[] = [
                 "id" => $product->getSku(),
                 "name" => $product->getName(),
                 "price" => number_format($product->getData("price_incl_tax"), 2),
-                "qty" => (string) $product->getQty()
+                "qty" => (string)$product->getQty(),
+                "dimension1" => (string) $product->getColor(),
+                "dimension2" => $product->getSku(),
+                "variant" => (string) $product->getSize(),
+                "brand" => $brand
             ];
         }
         return isset($productsData) ? $productsData : false;
     }
+
 }

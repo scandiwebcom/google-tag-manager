@@ -52,7 +52,7 @@ class Category
     /**
      * @var Config
      */
-    protected $config;
+    public $config;
 
     /**
      * Category constructor.
@@ -94,6 +94,7 @@ class Category
             return null;
         }
         $i = 1;
+        $brand = $this->config->getBrand();
         foreach ($products as $product) {
             $impressions[] = [
                 "id" => $product->getSku(),
@@ -101,7 +102,9 @@ class Category
                 "price" => $this->price->collectProductPrice($product),
                 "category" => $categoryName,
                 "position" => (string) $i,
-                "list" => $pageType
+                "list" => $pageType,
+                "dimension1" => 'parent_color',
+                "brand" => $brand
             ];
             $i++;
         }

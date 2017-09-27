@@ -106,6 +106,7 @@ class Search
         $products->setPageSize($this->config->getImpressionsMaximum())
             ->setCurPage($this->pager->getCurrentPage());
         $i = 1;
+        $brand = $this->config->getBrand();
         //TODO implement push of all data
         foreach ($products as $key => $product) {
             $impressions[] = [
@@ -113,7 +114,9 @@ class Search
                 "name" => $product->getName(),
                 "price" => $this->price->collectProductPrice($product),
                 "list" => self::PAGE_TYPE,
-                "position" => (string) $i
+                "position" => (string) $i,
+                "dimension1" => 'parent_color',
+                "brand" => $brand
             ];
             $i++;
         }

@@ -10,10 +10,12 @@
 
 namespace Scandi\Gtm\Plugin;
 
+use Magento\Catalog\Model\Category\AttributeRepository;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Controller\Cart\Add;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Store\Model\StoreManagerInterface;
+use Scandi\Gtm\Helper\Collectors\Attributes;
 use Scandi\Gtm\Helper\Collectors\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Scandi\Gtm\Helper\Config;
@@ -51,19 +53,26 @@ class AddToCartPlugin
     protected $config;
 
     /**
+     * @var Attributes
+     */
+    protected $attributes;
+
+    /**
      * AddToCartPlugin constructor.
      * @param Product $product
      * @param Data $jsonHelper
      * @param ProductRepository $productRepository
      * @param StoreManagerInterface $storeManager
      * @param Config $config
+     * @param Attributes $attributes
      */
     public function __construct(
         Product $product,
         Data $jsonHelper,
         ProductRepository $productRepository,
         StoreManagerInterface $storeManager,
-        Config $config
+        Config $config,
+        Attributes $attributes
     )
     {
         $this->product = $product;
@@ -71,6 +80,7 @@ class AddToCartPlugin
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->config = $config;
+        $this->attributes = $attributes;
     }
 
     /**
@@ -113,7 +123,10 @@ class AddToCartPlugin
         if ($productId && !array_key_exists("statusText", $content)) {
             $storeId = $this->storeManager->getStore()->getId();
             try {
-                return $this->productRepository->getById($productId, false, $storeId);
+                $product = $this->productRepository->getById($productId, false, $storeId);
+                $product = $this->attributes->getAttributes($product, $subject->getRequest()->getParams());
+                return $product;
+
             } catch (NoSuchEntityException $e) {
                 return false;
             }
@@ -121,4 +134,5 @@ class AddToCartPlugin
         return false;
     }
 }
+
 ?>

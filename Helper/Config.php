@@ -54,6 +54,7 @@ class Config
     const XML_PATH_CATEGORY_SELECTOR = 'scandi_gtm/developer/category_wrapper';
     const XML_PATH_CHECKOUT_STEPS = 'scandi_gtm/developer/checkout_steps';
     const XML_PATH_MAXIMUM_PRODUCTS = 'scandi_gtm/developer/pagesize_limit';
+    const XML_PATH_BRAND = 'scandi_gtm/developer/brand';
 
     /**
      * Config constructor.
@@ -147,5 +148,10 @@ class Config
     public function handleCheckoutSteps($steps)
     {
         return explode(',', $steps);
+    }
+
+    public function getBrand()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_BRAND, self::STORE_SCOPE);
     }
 }
