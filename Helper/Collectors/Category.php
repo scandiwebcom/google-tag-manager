@@ -100,7 +100,7 @@ class Category
                 "name" => $product->getName(),
                 "price" => $this->price->collectProductPrice($product),
                 "category" => $categoryName,
-                "position" => $i,
+                "position" => (string) $i,
                 "list" => $pageType
             ];
             $i++;

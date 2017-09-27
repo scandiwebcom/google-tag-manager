@@ -113,7 +113,7 @@ class Search
                 "name" => $product->getName(),
                 "price" => $this->price->collectProductPrice($product),
                 "list" => self::PAGE_TYPE,
-                "position" => $i
+                "position" => (string) $i
             ];
             $i++;
         }

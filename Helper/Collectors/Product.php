@@ -118,7 +118,7 @@ class Product
         $productData['currencyCode'] = $this->config->getStoreCurrency();
         $productData['price'] = $this->price->collectProductPrice($product);
         if ($product->getQty()) {
-            $productData['qty'] = $product->getQty();
+            $productData['qty'] = (string)$product->getQty();
         }
         if ($pageType) {
             $productData['list'] = $pageType;

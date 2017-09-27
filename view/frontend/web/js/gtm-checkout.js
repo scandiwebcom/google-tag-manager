@@ -32,7 +32,7 @@ require(['jquery'],
             else if (steps.includes(anchor)) {
                 var step = steps.indexOf(anchor) + 1;
             }
-            return step;
+            return step.toString();
         }
 
         // Check if dataLayer was initialised
