@@ -66,6 +66,27 @@
                        showInWebsite="1" showInStore="1">
                     <label>Brand to be pushed with all products</label>
                 </field>
+                <field id="color" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Color variable name in dataLayer</label>
+                    <comment>
+                        Will be disabled if empty
+                    </comment>
+                </field>
+                <field id="size" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Size variable name in dataLayer</label>
+                    <comment>
+                        Will be disabled if empty
+                    </comment>
+                </field>
+                <field id="childSku" translate="label" type="text" sortOrder="1" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Child's sku variable name in dataLayer</label>
+                    <comment>
+                        Will be child_sku if empty
+                    </comment>
+                </field>
             </group>
         </section>
     </system>

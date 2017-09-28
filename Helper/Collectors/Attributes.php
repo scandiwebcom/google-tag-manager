@@ -12,6 +12,7 @@ namespace Scandi\Gtm\Helper\Collectors;
 
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Eav\Model\AttributeRepository;
+use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Configurable;
 
 /**
@@ -32,17 +33,25 @@ class Attributes
     protected $attributeLoading;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Attributes constructor.
      * @param AttributeRepository $attributeRepository
      * @param ProductFactory $attributeLoading
+     * @param Config $config
      */
     public function __construct(
         AttributeRepository $attributeRepository,
-        ProductFactory $attributeLoading
+        ProductFactory $attributeLoading,
+        Config $config
     )
     {
         $this->attributeLoading = $attributeLoading;
         $this->attributeRepository = $attributeRepository;
+        $this->config = $config;
     }
 
     /**
@@ -87,11 +96,11 @@ class Attributes
         $productResource = $this->getProductFactory();
         $resource = $productResource->getResource();
         if (!$attribute) {
-            $attributes = ['color', 'size'];
-        } else if ($attribute) {
+            $attributes = $this->config->getActiveVariables();
+        } else {
             $attributes[] = $attribute;
         }
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             $label = $resource->getAttribute($attribute);
             if ($label->usesSource()) {
                 $attributeLabel = $label->getSource()->getOptionText($optionId);
@@ -124,7 +133,7 @@ class Attributes
         if (!is_array($attributes)) {
             return $product;
         }
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             foreach ($attribute as $key => $value) {
                 $product->setData($key, $value);
             }

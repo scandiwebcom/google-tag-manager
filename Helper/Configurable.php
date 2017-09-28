@@ -90,12 +90,12 @@ class Configurable
         $productData['qty'] = (string)$product->getQty();
         if ($this->child->getColor()) {
             $product = $this->retrieveAttribute('color', $product);
-            $productData['dimension1'] = $product->getData('color');
+            $productData[$this->config->getColorVariable()] = $product->getData('color');
         }
-        $productData['dimension2'] = $this->child->getSku();
+        $productData[$this->config->getChildSkuVariable()] = $this->child->getSku();
         if ($this->child->getSize()) {
             $product = $this->retrieveAttribute('size', $product);
-            $productData['variant'] = $product->getData('size');
+            $productData[$this->config->getSizeVariable()] = $product->getData('size');
         }
         $productData['brand'] = $this->config->getBrand();
         return $productData;
@@ -128,7 +128,7 @@ class Configurable
         if (!$this->getChildAndParent($product)) {
             return $product;
         }
-        $attributes = ['color', 'size'];
+        $attributes = $this->config->getActiveVariables();
         foreach ($attributes as $attributeClass) {
             if ($this->child->getData($attributeClass)) {
                 $product = $this->retrieveAttribute($attributeClass, $product);

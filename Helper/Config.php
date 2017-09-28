@@ -50,6 +50,9 @@ class Config
     const XML_PATH_CHECKOUT_STEPS = 'scandi_gtm/developer/checkout_steps';
     const XML_PATH_MAXIMUM_PRODUCTS = 'scandi_gtm/developer/pagesize_limit';
     const XML_PATH_BRAND = 'scandi_gtm/developer/brand';
+    const XML_PATH_SIZE = 'scandi_gtm/developer/size';
+    const XML_PATH_COLOR = 'scandi_gtm/developer/color';
+    const XML_PATH_CHILDSKU = 'scandi_gtm/developer/childSku';
 
     /**
      * Config constructor.
@@ -145,8 +148,68 @@ class Config
         return explode(',', $steps);
     }
 
+    /**
+     * @return mixed
+     */
     public function getBrand()
     {
         return $this->scopeConfig->getValue(self::XML_PATH_BRAND, self::STORE_SCOPE);
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getChildSkuVariable()
+    {
+        $value = $this->scopeConfig->getValue(self::XML_PATH_CHILDSKU, self::STORE_SCOPE);
+        return $value ? $value : 'child_sku';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColorVariable()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_COLOR, self::STORE_SCOPE);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSizeVariable()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_SIZE, self::STORE_SCOPE);
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariableArray()
+    {
+        $colorName = $this->getColorVariable();
+        $variables = [];
+        if ($colorName) {
+            $variables['color'] = $colorName;
+        }
+        $sizeName = $this->getSizeVariable();
+        if ($sizeName) {
+            $variables['size'] = $sizeName;
+        }
+        return $variables;
+    }
+
+    /**
+     * @return array
+     */
+    public function getActiveVariables()
+    {
+        $activeVariables = [];
+        if ($this->getColorVariable()) {
+            $activeVariables[] = 'color';
+        }
+        if ($this->getSizeVariable()) {
+            $activeVariables[] = 'size';
+        }
+        return $activeVariables;
     }
 }

@@ -152,7 +152,7 @@ class Success
         foreach ($order->getAllItems() as $product) {
             if ($product->getProductType() === Configurable::CONFIGURABLE_TYPE_ID) {
                 $product = $this->configurable->extendConfigurable($product);
-                $attributes = ['variant' => 'size', 'dimension1' => 'color'];
+                $attributes = $this->configurable->config->getVariableArray();
             }
             if ((int)$product->getPrice() == 0) {
                 continue;
@@ -173,8 +173,8 @@ class Success
                 continue;
             }
             foreach($attributes as $key => $value) {
-                if ($product->getData($value)) {
-                    $productData[$key] = $product->getData($value);
+                if ($product->getData($key)) {
+                    $productData[$value] = $product->getData($key);
                 }
             }
             $productsData[] = $productData;
