@@ -42,11 +42,6 @@ class Config
      */
     protected $pager;
 
-    /**
-     * @var CategoryRepository
-     */
-    protected $category;
-
     const STORE_SCOPE = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
     const XML_PATH_MODULE_IS_ENABLED = 'scandi_gtm/general/enable';
     const XML_PATH_SCRIPT_IN_HEAD = 'scandi_gtm/general/store_in_head';

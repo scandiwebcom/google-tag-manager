@@ -9,8 +9,10 @@
  */
 
 namespace Scandi\Gtm\Helper\Collectors;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable\Attribute;
 
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Eav\Model\AttributeRepository;
+use Scandi\Gtm\Helper\Configurable;
 
 /**
  * Class Attributes
@@ -20,16 +22,27 @@ class Attributes
 {
 
     /**
-     * @var Attribute
+     * @var AttributeRepository
      */
-    protected $attribute;
+    protected $attributeRepository;
+
+    /**
+     * @var ProductFactory
+     */
+    protected $attributeLoading;
 
     /**
      * Attributes constructor.
+     * @param AttributeRepository $attributeRepository
+     * @param ProductFactory $attributeLoading
      */
     public function __construct(
+        AttributeRepository $attributeRepository,
+        ProductFactory $attributeLoading
     )
     {
+        $this->attributeLoading = $attributeLoading;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -37,10 +50,17 @@ class Attributes
      * @param $params
      * @return int
      */
-    public function getAttributes($product, $params)
+    public function handleAttributes($product, $params)
     {
-        foreach($this->getAttributesIds($params) as $key=>$value) {
-
+        $attributes = [];
+        if ($product->getTypeId() !== Configurable::CONFIGURABLE_TYPE_ID) {
+            return $product;
+        }
+        foreach ($this->getAttributesIds($params) as $key => $value) {
+            $attributes[] = $this->getAttributeLabel($value);
+        }
+        if (sizeof($attributes) > 0) {
+            $product = $this->setAttributes($product, $attributes);
         }
         return $product;
     }
@@ -57,4 +77,58 @@ class Attributes
         return $params['super_attribute'];
     }
 
+    /**
+     * @param $optionId
+     * @param null $attribute
+     * @return array
+     */
+    public function getAttributeLabel($optionId, $attribute = null)
+    {
+        $productResource = $this->getProductFactory();
+        $resource = $productResource->getResource();
+        if (!$attribute) {
+            $attributes = ['color', 'size'];
+        } else if ($attribute) {
+            $attributes[] = $attribute;
+        }
+        foreach($attributes as $attribute) {
+            $label = $resource->getAttribute($attribute);
+            if ($label->usesSource()) {
+                $attributeLabel = $label->getSource()->getOptionText($optionId);
+            }
+            if (!isset($attributeLabel)) {
+                return array();
+            }
+            if ($attributeLabel) {
+                return array($attribute => $attributeLabel);
+            }
+        }
+        return array();
+    }
+
+    /**
+     * @return \Magento\Catalog\Model\Product
+     */
+    public function getProductFactory()
+    {
+        return $this->attributeLoading->create();
+    }
+
+    /**
+     * @param $product
+     * @param $attributes
+     * @return mixed
+     */
+    public function setAttributes($product, $attributes)
+    {
+        if (!is_array($attributes)) {
+            return $product;
+        }
+        foreach($attributes as $attribute) {
+            foreach ($attribute as $key => $value) {
+                $product->setData($key, $value);
+            }
+        }
+        return $product;
+    }
 }

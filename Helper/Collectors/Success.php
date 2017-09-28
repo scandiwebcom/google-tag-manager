@@ -14,6 +14,7 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Sales\Model\OrderRepository;
+use Scandi\Gtm\Helper\Configurable;
 
 /**
  * Class Success
@@ -48,19 +49,26 @@ class Success
     protected $jsonHelper;
 
     /**
+     * @var Configurable
+     */
+    protected $configurable;
+
+    /**
      * Success constructor.
      * @param Session $checkoutSession
      * @param OrderRepository $order
      * @param ProductRepository $productRepository
      * @param Category $category
      * @param Data $jsonHelper
+     * @param Configurable $configurable
      */
     public function __construct(
         Session $checkoutSession,
         OrderRepository $order,
         ProductRepository $productRepository,
         Category $category,
-        Data $jsonHelper
+        Data $jsonHelper,
+        Configurable $configurable
     )
     {
         $this->checkoutSession = $checkoutSession;
@@ -68,6 +76,7 @@ class Success
         $this->productRepository = $productRepository;
         $this->category = $category;
         $this->jsonHelper = $jsonHelper;
+        $this->configurable = $configurable;
     }
 
     /**
@@ -141,22 +150,34 @@ class Success
     {
         $brand = $this->category->config->getBrand();
         foreach ($order->getAllItems() as $product) {
+            if ($product->getProductType() === Configurable::CONFIGURABLE_TYPE_ID) {
+                $product = $this->configurable->extendConfigurable($product);
+                $attributes = ['variant' => 'size', 'dimension1' => 'color'];
+            }
             if ((int)$product->getPrice() == 0) {
                 continue;
             }
             $categories = $this->productRepository->get($product->getSku())->getCategoryIds();
-            $productsData[] = [
+            $productData = [
                 "name" => $product->getName(),
                 "id" => $product->getSku(),
                 "price" => $product->getPrice(),
                 "category" => $this->category->getCategoryName($categories),
                 "quantity" => $product->getQtyOrdered(),
-                "dimension1" => "parent_color",
                 "dimension2" => "child_sku",
-                "variant" => "child_size",
                 "brand" => $brand,
                 "affiliate" => "to be requested"
             ];
+            if (!isset($attributes)) {
+                $productsData[] = $productData;
+                continue;
+            }
+            foreach($attributes as $key => $value) {
+                if ($product->getData($value)) {
+                    $productData[$key] = $product->getData($value);
+                }
+            }
+            $productsData[] = $productData;
         }
         return isset($productsData) ? $productsData : false;
     }

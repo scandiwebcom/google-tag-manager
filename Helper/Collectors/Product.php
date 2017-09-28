@@ -117,9 +117,13 @@ class Product
         }
         $productData['currencyCode'] = $this->config->getStoreCurrency();
         $productData['price'] = $this->price->collectProductPrice($product);
-        $productData['dimension1'] = 'parent_color';
+        if ($product->getColor()) {
+            $productData['dimension1'] = $product->getColor();
+        }
         $productData['dimension2'] = 'child_sku';
-        $productData['variant'] = 'child_size';
+        if ($product->getSize()) {
+            $productData['variant'] = $product->getSize();
+        }
         $productData['brand'] = $this->config->getBrand();
         if ($product->getQty()) {
             $productData['qty'] = (string)$product->getQty();

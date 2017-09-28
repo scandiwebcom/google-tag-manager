@@ -124,7 +124,7 @@ class AddToCartPlugin
             $storeId = $this->storeManager->getStore()->getId();
             try {
                 $product = $this->productRepository->getById($productId, false, $storeId);
-                $product = $this->attributes->getAttributes($product, $subject->getRequest()->getParams());
+                $product = $this->attributes->handleAttributes($product, $subject->getRequest()->getParams());
                 return $product;
 
             } catch (NoSuchEntityException $e) {

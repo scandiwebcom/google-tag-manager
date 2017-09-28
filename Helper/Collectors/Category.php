@@ -103,7 +103,6 @@ class Category
                 "category" => $categoryName,
                 "position" => (string) $i,
                 "list" => $pageType,
-                "dimension1" => 'parent_color',
                 "brand" => $brand
             ];
             $i++;

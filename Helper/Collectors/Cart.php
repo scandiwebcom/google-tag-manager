@@ -81,7 +81,7 @@ class Cart
             if ($product->getData("price_incl_tax") == 0) {
                 continue;
             }
-            if ($product->getProductType() === 'configurable') {
+            if ($product->getProductType() === Configurable::CONFIGURABLE_TYPE_ID) {
                 $productsData[] = $this->configurable->getProductData($product);
                 continue;
             }

@@ -115,7 +115,6 @@ class Search
                 "price" => $this->price->collectProductPrice($product),
                 "list" => self::PAGE_TYPE,
                 "position" => (string) $i,
-                "dimension1" => 'parent_color',
                 "brand" => $brand
             ];
             $i++;

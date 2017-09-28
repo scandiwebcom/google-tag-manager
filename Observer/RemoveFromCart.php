@@ -15,6 +15,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Scandi\Gtm\Helper\Collectors\Product;
 use Scandi\Gtm\Helper\Config;
+use Scandi\Gtm\Helper\Configurable;
 
 /**
  * Class AddToCart
@@ -37,20 +38,28 @@ class RemoveFromCart implements ObserverInterface
     protected $config;
 
     /**
+     * @var Configurable
+     */
+    protected $configurable;
+
+    /**
      * RemoveFromCart constructor.
      * @param CustomerSession $customerSession
      * @param Product $product
      * @param Config $config
+     * @param Configurable $configurable
      */
     public function __construct(
         CustomerSession $customerSession,
         Product $product,
-        Config $config
+        Config $config,
+        Configurable $configurable
     )
     {
         $this->customerSession = $customerSession;
         $this->product = $product;
         $this->config = $config;
+        $this->configurable = $configurable;
     }
 
     /**
@@ -58,8 +67,12 @@ class RemoveFromCart implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+
         if ($this->config->isEnabled()) {
             $product = $observer->getEvent()->getQuoteItem();
+            if ($product->getProductType() === Configurable::CONFIGURABLE_TYPE_ID) {
+                $product = $this->configurable->extendConfigurable($product);
+            }
             $addData['event'] = 'removeFromCart';
             $addData['ecommerce']['remove']['products'] = array($this->product->collectProductData($product));
             $this->customerSession->setRemoveFromCart(json_encode($addData));
