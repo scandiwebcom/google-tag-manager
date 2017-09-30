@@ -12,9 +12,7 @@ namespace Scandi\Gtm\Helper;
 
 use Magento\Catalog\Model\Product\Interceptor;
 use Magento\Catalog\Model\ProductRepository;
-use Magento\Checkout\Model\Session;
 use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable as ConfigurableType;
-use Magento\Framework\Exception\NotFoundException;
 use Scandi\Gtm\Helper\Collectors\Attributes;
 
 /**
@@ -77,37 +75,51 @@ class Configurable
 
     /**
      * @param $product
-     * @return array|bool
+     * @return array
      */
     public function getProductData($product)
     {
-        if (!$this->getChildAndParent($product)) {
-            return array();
-        }
-        $productData['id'] = $this->parent->getSku();
-        $productData['name'] = $this->child->getName();
+        $productData = [];
+        $productData = $this->addAttributesToData($product, $productData);
+        $productData['name'] = $product->getName();
         $productData['price'] = number_format($product->getData("price_incl_tax"), 2);
-        $productData['qty'] = (string)$product->getQty();
-        if ($this->child->getColor()) {
-            $product = $this->retrieveAttribute('color', $product);
-            $productData[$this->config->getColorVariable()] = $product->getData('color');
-        }
-        $productData[$this->config->getChildSkuVariable()] = $this->child->getSku();
-        if ($this->child->getSize()) {
-            $product = $this->retrieveAttribute('size', $product);
-            $productData[$this->config->getSizeVariable()] = $product->getData('size');
-        }
+        $productData['qty'] = $product->getQty();
         $productData['brand'] = $this->config->getBrand();
         return $productData;
     }
 
     /**
      * @param $product
-     * @return bool|$this
+     * @param array $productData
+     * @return array|null
+     */
+    public function addAttributesToData($product, array $productData)
+    {
+        if (!$this->isConfigurable($product)) {
+            return $productData;
+        }
+        $this->getChildAndParent($product);
+        foreach ($this->config->getVariableArray() as $key => $value) {
+            if ($this->child->getData($key)) {
+                $product = $this->retrieveAttribute($key, $product);
+                $productData[$value] = $product->getData($key);
+            }
+        }
+        $productData['id'] = $this->parent->getSku();
+        if ($productData['id'] !== $this->child->getSku()) {
+            $productData[$this->config->getChildSkuVariable()] = $this->child->getSku();
+        }
+        return $productData;
+    }
+
+    /**
+     * @param $product
+     * @return $this|null
      */
     public function getChildAndParent($product)
     {
-        $parentByChild = $this->configurableType->getParentIdsByChild($product->getItemId());
+        $this->child = $this->productRepository->get($product->getSku());
+        $parentByChild = $this->configurableType->getParentIdsByChild($this->child->getEntityId());
 
         // For the case if quote did not initialise the parent of the product
         if (sizeof($parentByChild) <= 0) {
@@ -115,7 +127,6 @@ class Configurable
         } else {
             $this->parent = $this->productRepository->getById($parentByChild[0]);
         }
-        $this->child = $this->productRepository->get($product->getSku());
         return $this;
     }
 
@@ -149,5 +160,15 @@ class Configurable
             $product->setData($attributeClass, $attribute[$attributeClass]);
         }
         return $product;
+    }
+
+    /**
+     * @param $product
+     * @return bool
+     */
+    public function isConfigurable($product)
+    {
+        return ($product->getProductType() === $this::CONFIGURABLE_TYPE_ID ||
+            $product->getTypeId() === $this::CONFIGURABLE_TYPE_ID);
     }
 }

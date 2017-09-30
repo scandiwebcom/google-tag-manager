@@ -38,6 +38,11 @@ class Config
     protected $toolbar;
 
     /**
+     * @var Price
+     */
+    public $price;
+
+    /**
      * @var Pager
      */
     protected $pager;
@@ -53,6 +58,7 @@ class Config
     const XML_PATH_SIZE = 'scandi_gtm/developer/size';
     const XML_PATH_COLOR = 'scandi_gtm/developer/color';
     const XML_PATH_CHILDSKU = 'scandi_gtm/developer/childSku';
+    const XML_PATH_CHECKOUT_WRAPPERS = 'scandi_gtm/developer/checkout_options_wrappers';
 
     /**
      * Config constructor.
@@ -60,18 +66,21 @@ class Config
      * @param StoreManagerInterface $storeManager
      * @param Pager $pager
      * @param Toolbar $toolbar
+     * @param Price $price
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
         Pager $pager,
-        Toolbar $toolbar
+        Toolbar $toolbar,
+        Price $price
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->storeManager = $storeManager;
         $this->toolbar = $toolbar;
         $this->pager = $pager;
+        $this->price = $price;
     }
 
     /**
@@ -136,14 +145,15 @@ class Config
      */
     public function getCheckoutSteps()
     {
-        return $this->handleCheckoutSteps($this->scopeConfig->getValue(self::XML_PATH_CHECKOUT_STEPS, self::STORE_SCOPE));
+        return $this->handleConfigString(
+            $this->scopeConfig->getValue(self::XML_PATH_CHECKOUT_STEPS, self::STORE_SCOPE));
     }
 
     /**
      * @param $steps
      * @return array
      */
-    public function handleCheckoutSteps($steps)
+    public function handleConfigString($steps)
     {
         return explode(',', $steps);
     }
@@ -163,6 +173,15 @@ class Config
     {
         $value = $this->scopeConfig->getValue(self::XML_PATH_CHILDSKU, self::STORE_SCOPE);
         return $value ? $value : 'child_sku';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCheckoutWrappers()
+    {
+        return $this->handleConfigString(
+            $this->scopeConfig->getValue(self::XML_PATH_CHECKOUT_WRAPPERS, self::STORE_SCOPE));
     }
 
     /**

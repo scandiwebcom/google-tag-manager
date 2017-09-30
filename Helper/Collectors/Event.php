@@ -53,7 +53,7 @@ class Event
     /**
      * Value of imressions per push from the GTM documentation
      */
-    const IMPRESSIONS_LIMIT = 50;
+    const IMPRESSIONS_LIMIT = 20;
 
     /**
      * Event constructor.
@@ -99,6 +99,7 @@ class Event
                 break;
             case 'checkout':
                 $pushes .= $this->checkout->getCheckoutSteps();
+                $pushes .= $this->checkout->getOptionWrappers();
                 $pushes .= $this->checkout->getCart();
                 break;
             case 'product':

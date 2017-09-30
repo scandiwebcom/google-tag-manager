@@ -64,7 +64,7 @@ class Cart
         //Value will include discount if any exist
         $cartData["total"] = number_format($this->quote->getGrandTotal(), 2);
         $cartData["qty"] = (int)$this->quote->getItemsQty();
-        $cartData["qty"] = (string)($cartData['qty']);
+        $cartData["qty"] = $cartData['qty'];
         $cartData["products"] = $this->collectProducts($this->quote);
         return $cartData;
     }
@@ -85,16 +85,14 @@ class Cart
                 $productsData[] = $this->configurable->getProductData($product);
                 continue;
             }
-            $productsData[] = [
+            $productData = [
                 "id" => $product->getSku(),
                 "name" => $product->getName(),
                 "price" => number_format($product->getData("price_incl_tax"), 2),
                 "qty" => (string)$product->getQty(),
-                "dimension1" => (string) $product->getColor(),
-                "dimension2" => $product->getSku(),
-                "variant" => (string) $product->getSize(),
                 "brand" => $brand
             ];
+            $productsData[] = $productData;
         }
         return isset($productsData) ? $productsData : false;
     }

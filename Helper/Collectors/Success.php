@@ -150,10 +150,7 @@ class Success
     {
         $brand = $this->category->config->getBrand();
         foreach ($order->getAllItems() as $product) {
-            if ($product->getProductType() === Configurable::CONFIGURABLE_TYPE_ID) {
-                $product = $this->configurable->extendConfigurable($product);
-                $attributes = $this->configurable->config->getVariableArray();
-            }
+
             if ((int)$product->getPrice() == 0) {
                 continue;
             }
@@ -164,18 +161,11 @@ class Success
                 "price" => $product->getPrice(),
                 "category" => $this->category->getCategoryName($categories),
                 "quantity" => $product->getQtyOrdered(),
-                "dimension2" => "child_sku",
                 "brand" => $brand,
                 "affiliate" => "to be requested"
             ];
-            if (!isset($attributes)) {
-                $productsData[] = $productData;
-                continue;
-            }
-            foreach($attributes as $key => $value) {
-                if ($product->getData($key)) {
-                    $productData[$value] = $product->getData($key);
-                }
+            if ($product->getProductType() === Configurable::CONFIGURABLE_TYPE_ID) {
+                $productData = $this->configurable->addAttributesToData($product, $productData);
             }
             $productsData[] = $productData;
         }

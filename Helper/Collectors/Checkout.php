@@ -48,15 +48,36 @@ class Checkout
      */
     public function getCheckoutSteps()
     {
-        $steps = '';
-        foreach ($this->config->getCheckoutSteps() as $step) {
-            $step = trim($step, ' ');
-            $steps .= "'$step',";
-        }
-        $steps = rtrim($steps, ',');
-        return "<script>checkoutLayerSteps = [" . $steps . "]</script>";
+        return $this->makeCheckoutObject($this->config->getCheckoutSteps(), 'checkoutLayerSteps');
     }
 
+    /**
+     * @return string
+     */
+    public function getOptionWrappers()
+    {
+        return $this->makeCheckoutObject($this->config->getCheckoutWrappers(), 'checkoutWrappers');
+    }
+
+    /**
+     * @param $configurations
+     * @param $objectName
+     * @return string
+     */
+    protected function makeCheckoutObject($configurations, $objectName)
+    {
+        $items = '';
+        foreach($configurations as $configuration) {
+            $configuration = trim($configuration, ' ');
+            $items .= "'$configuration',";
+        }
+        $items = rtrim($items, ',');
+        return "<script>$objectName = [" . $items . "]</script>";
+    }
+
+    /**
+     * @return string
+     */
     public function getCart()
     {
         return "<script>cartData = " . json_encode($this->cart->collectProducts($this->cart->quote)) . ";</script>";

@@ -10,38 +10,55 @@ require(['jquery'],
 
     function ($) {
 
+        /**
+         * Runs the logic, if dataLayer object is defined
+         */
         $(document).ready(function () {
             if (isDataLayer()) {
                 collectCheckoutPush();
+                bindInputs();
                 $(window).bind('hashchange', function (e) {
                     collectCheckoutPush();
+                    bindInputs();
+                });
+                $(checkoutWrappers[0]).bind("DOMSubtreeModified",function(){
+                    alert('changed');
                 });
             }
         });
 
-        // Detect checkout step, based on the array
+        /**
+         * etect checkout step, based on the array
+         * @returns {*}
+         */
         function detectCheckoutStep() {
-            steps = getSteps();
+            var steps = getSteps(), step;
             if (!steps) {
                 return false;
             }
             var anchor = document.location.hash;
             if (anchor === '' || (steps.length === 1 && steps[0] === '')) {
-                var step = 1;
+                step = 1;
             }
             else if (steps.includes(anchor)) {
-                var step = steps.indexOf(anchor) + 1;
+                step = steps.indexOf(anchor) + 1;
             }
             return step.toString();
         }
 
-        // Check if dataLayer was initialised
+        /**
+         * Check if dataLayer was initialised
+         * @returns {boolean}
+         */
         function isDataLayer() {
             return typeof(dataLayer) !== 'undefined';
         }
 
-        // Get global with steps from the backend.
-        // Generated in Scandi\Gtm\Helper\Collectors\Checkout->getCheckoutSteps;
+        /**
+         * Get global with steps from the backend.
+         * Generated in Scandi\Gtm\Helper\Collectors\Checkout->getCheckoutSteps;
+         * @returns {*}
+         */
         function getSteps() {
             if (typeof(checkoutLayerSteps) !== 'undefined') {
                 return checkoutLayerSteps;
@@ -51,25 +68,44 @@ require(['jquery'],
             }
         }
 
-        // Collect push
-        function collectCheckoutPush() {
-            dataLayer.push({
-                'event': 'checkout',
-                'ecommerce': {
-                    'checkout': {
-                        'actionField': {
-                            'step': detectCheckoutStep(),
-                            'option': 'selected_by_user'
-                        },
-                        'products': getCart()
+        /**
+         * Collect push
+         * @param option
+         */
+        function collectCheckoutPush(option) {
+            if (typeof (option) !== 'undefined') {
+                dataLayer.push({
+                    'event': 'checkout',
+                    'ecommerce': {
+                        'checkout': {
+                            'actionField': {
+                                'step': detectCheckoutStep(),
+                                'option': option
+                            },
+                            'products': getCart()
+                        }
                     }
-                }
-            })
+                });
+            } else {
+                dataLayer.push({
+                    'event': 'checkout',
+                    'ecommerce': {
+                        'checkout': {
+                            'actionField': {
+                                'step': detectCheckoutStep(),
+                            },
+                            'products': getCart()
+                        }
+                    }
+                });
+            }
         }
 
-        // Find cart data pushed on page render
+        /**
+         * Find cart data pushed on page render
+         * @returns {*}
+         */
         function getCart() {
-            // Get global with steps from the backend.
             // Generated in Scandi\Gtm\Helper\Collectors\Checkout->getCart();
             if (typeof(cartData) !== 'undefined') {
                 return cartData;
@@ -77,20 +113,48 @@ require(['jquery'],
             return '';
         }
 
-        // Find cart data that is pushed into event already
-        function getPushedCart() {
-            while(true) {
-                for (var i = 0, len = dataLayer.length - 1; i < len; i++) {
-                    if (dataLayer[i]['ecommerce'] === undefined) {
-                        continue;
-                    }
-                    if (dataLayer[i]['ecommerce']['checkout'] === undefined) {
-                        continue;
-                    }
-                    if (dataLayer[i]['ecommerce']['checkout']['products'] !== undefined) {
-                        return dataLayer[i]['ecommerce']['checkout']['products'];
-                    }
-                }
+        /**
+         * Bind radio buttons with push
+         * @returns {null}
+         */
+        function bindInputs() {
+            var inputs = getInputsByStep();
+            if (inputs.length === 0) {
+                setTimeout(function(){
+                    bindInputs()
+                }, 1000);
+                return null;
             }
+            setTimeout(function(){
+                jQuery(inputs).change(function(){collectCheckoutPush($(this).attr('value'))})
+            }, 1000);
+        }
+
+        /**
+         * Detect visible input, by checking which step is displayed
+         * @returns {*}
+         */
+        function getInputsByStep() {
+            var wrappers = getCheckoutWrappers(), index = detectCheckoutStep() - 1;
+            if (wrappers.length <= 0) {
+                return null;
+            }
+            if (wrappers[index] === 'undefined') {
+                return null;
+            }
+            var selector = wrappers[index] + ' input[type=radio]';
+            return $(selector);
+        }
+
+        /**
+         * Returns global object of checkoutWrapper if declared
+         * Generated in Scandi\Gtm\Helper\Collectors\Checkout->getCheckoutWrappers();
+         * @returns {*}
+         */
+        function getCheckoutWrappers() {
+            if (typeof checkoutWrappers !== 'undefined') {
+                return checkoutWrappers;
+            }
+            return '';
         }
     });

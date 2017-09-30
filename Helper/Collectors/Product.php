@@ -15,7 +15,7 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Json\Helper\Data;
 use Magento\Framework\Registry;
 use Scandi\Gtm\Helper\Config;
-use Scandi\Gtm\Helper\Price;
+use Scandi\Gtm\Helper\Configurable;
 
 /**
  * Class Product
@@ -45,11 +45,6 @@ class Product
     protected $productRepository;
 
     /**
-     * @var Price
-     */
-    protected $price;
-
-    /**
      * @var Config
      */
     protected $config;
@@ -60,32 +55,37 @@ class Product
     protected $jsonHelper;
 
     /**
+     * @var Configurable
+     */
+    protected $configurable;
+
+    /**
      * Product constructor.
      * @param View $view
      * @param Registry $registry
      * @param Category $category
      * @param ProductRepository $productRepository
-     * @param Price $price
      * @param Config $config
      * @param Data $jsonHelper
+     * @param Configurable $configurable
      */
     public function __construct(
         View $view,
         Registry $registry,
         Category $category,
         ProductRepository $productRepository,
-        Price $price,
         Config $config,
-        Data $jsonHelper
+        Data $jsonHelper,
+        Configurable $configurable
     )
     {
         $this->view = $view;
         $this->registry = $registry;
         $this->category = $category;
         $this->productRepository = $productRepository;
-        $this->price = $price;
         $this->config = $config;
         $this->jsonHelper = $jsonHelper;
+        $this->configurable = $configurable;
     }
 
     /**
@@ -116,17 +116,11 @@ class Product
             $productData['category'] = $this->registry->registry('current_category')->getName();
         }
         $productData['currencyCode'] = $this->config->getStoreCurrency();
-        $productData['price'] = $this->price->collectProductPrice($product);
-        if ($product->getColor()) {
-            $productData['dimension1'] = $product->getColor();
-        }
-        $productData['dimension2'] = 'child_sku';
-        if ($product->getSize()) {
-            $productData['variant'] = $product->getSize();
-        }
+        $productData['price'] = $this->config->price->collectProductPrice($product);
         $productData['brand'] = $this->config->getBrand();
+        $productData = $this->configurable->addAttributesToData($product, $productData);
         if ($product->getQty()) {
-            $productData['qty'] = (string)$product->getQty();
+            $productData['qty'] = $product->getQty();
         }
         if ($pageType) {
             $productData['list'] = $pageType;
