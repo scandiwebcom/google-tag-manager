@@ -14,7 +14,7 @@ Add the extension by running
 
 ```
 composer config repositories.scandi-google-tag-manager git git@github.com:scandiwebcom/google-tag-manager.git
-composer require scandiwebcom/google-tag-manager:1.0.14
+composer require scandiwebcom/google-tag-manager:1.0.15
 php -f bin/magento setup:upgrade
 ```
 ## Configuration
@@ -45,3 +45,7 @@ expected amount - go to the configurations and enter maximum amount of products 
 
     9.1. If you have amount switchers user can see on the category or search pages, and amount is pushed incorrectly,
     please contact aleksejt@scandiweb.com in order to report the problem.
+    
+10. Configure color, size variables to be named, as required.
+
+11. Enter the brand, to be pushed with ALL of the projects (dynamic change will be added later).

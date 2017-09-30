@@ -21,6 +21,9 @@
             <developer>
                 <category_wrapper>ol.product-items > li.item.product-item</category_wrapper>
                 <checkout_steps>#shipping, #payment</checkout_steps>
+                <checkout_options_wrappers>
+                    #checkout-shipping-method-load, #checkout-payment-method-load
+                </checkout_options_wrappers>
             </developer>
         </scandi_gtm>
     </default>
