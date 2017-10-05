@@ -146,8 +146,8 @@ class Event
         $pushes = '';
         $chunkedForPush = array_chunk($impressions, self::IMPRESSIONS_LIMIT);
         foreach ($chunkedForPush as $push) {
+            $tmp['event'] = 'impressions';
             $tmp['ecommerce']['impressions'] = $push;
-            $tmp['ecommerce']['event'] = 'impressions';
             $push = json_encode($tmp);
             $pushes .= "<script>dataLayer.push($push)</script>";
         }
