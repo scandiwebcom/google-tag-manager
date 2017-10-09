@@ -27,13 +27,34 @@ require(['jquery'],
                 return false;
             }
             $(document).ready(function () {
-                collectCheckoutPush();
+                waitForPushes();
                 bindInputs();
                 $(window).bind('hashchange', function (e) {
                     collectCheckoutPush();
                     bindInputs();
                 });
             });
+        }
+
+        /**
+         * Waits until general push will be done
+         *
+         * @returns {boolean}
+         */
+        function waitForPushes() {
+            var flag = false;
+            $.each(dataLayer, function () {
+                if (this.event === 'general') {
+                    flag = true;
+                }
+            });
+            if (!flag) {
+                setTimeout(function() {
+                    waitForPushes();
+                }, 1000);
+                return false;
+            }
+            collectCheckoutPush();
         }
 
         /**
