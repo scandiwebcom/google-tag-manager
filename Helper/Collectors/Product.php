@@ -168,6 +168,6 @@ class Product
     {
         $push['event'] = 'details';
         $push['ecommerce']['details']['products'] = array($productsDetails);
-        return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");</script>";
+        return "dataLayer.push(" . $this->jsonHelper->jsonEncode($push) . ");";
     }
 }

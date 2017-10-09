@@ -72,7 +72,7 @@ class Checkout
             $items .= "'$configuration',";
         }
         $items = rtrim($items, ',');
-        return "<script>$objectName = [" . $items . "]</script>";
+        return "$objectName = [" . $items . "]";
     }
 
     /**
@@ -80,6 +80,6 @@ class Checkout
      */
     public function getCart()
     {
-        return "<script>cartData = " . json_encode($this->cart->collectProducts($this->cart->quote)) . ";</script>";
+        return "cartData = " . json_encode($this->cart->collectProducts($this->cart->quote)) . ";";
     }
 }

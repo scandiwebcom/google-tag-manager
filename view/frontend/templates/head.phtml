@@ -103,6 +103,11 @@
                         }
                     }
                     dataLayer.push(responce);
+                    if (urlPart === 'gtm/index/general' && typeof(pushes) !== 'undefined') {
+                        $.each(pushes, function(){
+                            eval(this.valueOf());
+                        })
+                    }
                 }
             });
         }

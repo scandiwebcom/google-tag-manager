@@ -86,7 +86,7 @@ class Success
     {
         $order = $this->gatherSuccessData($this->jsonHelper->jsonDecode($this->checkoutSession->getGtmSuccess()));
         $this->checkoutSession->unstGtmSuccess();
-        return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($order) . ")</script>";
+        return "dataLayer.push(" . $this->jsonHelper->jsonEncode($order) . ")";
     }
 
     /**

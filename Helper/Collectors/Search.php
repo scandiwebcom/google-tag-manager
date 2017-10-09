@@ -94,7 +94,7 @@ class Search
     public function getKeywordPush()
     {
         $search['ecommerce']['keyword'] = $this->searchHelper->getEscapedQueryText();
-        return "<script>dataLayer.push(" . $this->jsonHelper->jsonEncode($search) . ")</script>";
+        return "dataLayer.push(" . $this->jsonHelper->jsonEncode($search) . ")";
     }
 
     /**
