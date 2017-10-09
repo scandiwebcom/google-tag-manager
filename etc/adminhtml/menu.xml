@@ -14,6 +14,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Scandi_Gtm::menu_label" title="Google Tag Manager" module="Scandi_Gtm" sortOrder="50" resource="Scandiweb_Core::all" parent="Scandiweb_Core::all"/>
-        <add id="Scandi_Gtm::gtm_configuration" title="Configuration" module="Scandi_Gtm" sortOrder="10" parent="Scandi_Gtm::menu_label" action="adminhtml/system_config/edit/section/scandi_Gtm" resource="Scandi_Gtm::gtm_configuration"/>
+        <add id="Scandi_Gtm::gtm_configuration" title="Configuration" module="Scandi_Gtm" sortOrder="10" parent="Scandi_Gtm::menu_label" action="adminhtml/system_config/edit/section/scandi_gtm" resource="Scandi_Gtm::gtm_configuration"/>
     </menu>
 </config>
