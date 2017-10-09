@@ -88,7 +88,8 @@ class Event
      */
     public function gatherPushes($pageName = null)
     {
-        $pushes = "<script>dataLayer.push(" . $this->getEventPushData() . ")</script>";
+        $pushes = [];
+        $pushes[] = "dataLayer.push(" . $this->getEventPushData() . ")";
         switch ($pageName) {
             case 'category':
                 $impressionsPush = $this->category->createImpressions();
@@ -98,26 +99,29 @@ class Event
                 $keywordPush = $this->search->getKeyWordPush();
                 break;
             case 'checkout':
-                $pushes .= $this->checkout->getCheckoutSteps();
-                $pushes .= $this->checkout->getOptionWrappers();
-                $pushes .= $this->checkout->getCart();
+                $pushes[] = $this->checkout->getCheckoutSteps();
+                $pushes[] = $this->checkout->getOptionWrappers();
+                $pushes[] = $this->checkout->getCart();
                 break;
             case 'product':
-                $pushes .= $this->product->createDetails();
+                $pushes[] = $this->product->createDetails();
                 break;
             case 'success':
-                $pushes .= $this->success->collectSuccess();
+                $pushes[] = $this->success->collectSuccess();
                 break;
             default:
-                return $pushes;
+                return json_encode($pushes);
+        }
+
+        if (isset($keywordPush)) {
+            $pushes[] = $keywordPush;
         }
         if (isset($impressionsPush)) {
-            $pushes .= $this->handleImpressions($impressionsPush);
+            foreach($this->handleImpressions($impressionsPush) as $impressionPush) {
+                $pushes[] = $impressionPush;
+            }
         }
-        if (isset($keywordPush)) {
-            $pushes .= $keywordPush;
-        }
-        return $pushes;
+        return json_encode($pushes);
     }
 
     /**
@@ -139,17 +143,17 @@ class Event
 
     /**
      * @param $impressions
-     * @return string
+     * @return array
      */
     public function handleImpressions($impressions)
     {
-        $pushes = '';
-        $chunkedForPush = array_chunk($impressions, self::IMPRESSIONS_LIMIT);
+        $pushes = [];
+        $chunkedForPush = array_chunk($impressions, 5);
         foreach ($chunkedForPush as $push) {
             $tmp['event'] = 'impressions';
             $tmp['ecommerce']['impressions'] = $push;
             $push = json_encode($tmp);
-            $pushes .= "<script>dataLayer.push($push)</script>";
+            $pushes[] = "dataLayer.push($push);";
         }
         return $pushes;
     }
