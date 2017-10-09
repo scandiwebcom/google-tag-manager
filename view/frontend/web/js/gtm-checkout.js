@@ -21,9 +21,6 @@ require(['jquery'],
                     collectCheckoutPush();
                     bindInputs();
                 });
-                $(checkoutWrappers[0]).bind("DOMSubtreeModified",function(){
-                    alert('changed');
-                });
             }
         });
 
