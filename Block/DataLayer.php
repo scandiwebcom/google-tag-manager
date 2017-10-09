@@ -27,6 +27,8 @@ use Magento\Search\Helper\Data;
 class DataLayer extends DataLayerCollector
 {
 
+    const GENERAL_EVENT_NAME = 'general';
+
     /**
      * @var Http
      */
@@ -106,6 +108,7 @@ class DataLayer extends DataLayerCollector
     {
         $id = $this->customerHelper->getCustomerId($this->customerSession);
         $layer['pageType'] = $this->getPageName();
+        $layer['event'] = $this::GENERAL_EVENT_NAME;
         $layer['customerId'] = $id;
         $layer['ecommerce']['cart'] = $this->cart->collectCart();
         if (!$layer['ecommerce']['cart']) {
