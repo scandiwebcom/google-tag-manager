@@ -119,15 +119,19 @@ require(['jquery'],
          */
         function bindInputs() {
             var inputs = getInputsByStep();
-            if (inputs.length === 0) {
-                setTimeout(function(){
-                    bindInputs()
+            if (inputs) {
+                if (inputs.length === 0) {
+                    setTimeout(function () {
+                        bindInputs()
+                    }, 1000);
+                    return null;
+                }
+                setTimeout(function () {
+                    jQuery(inputs).change(function () {
+                        collectCheckoutPush($(this).attr('value'))
+                    })
                 }, 1000);
-                return null;
             }
-            setTimeout(function(){
-                jQuery(inputs).change(function(){collectCheckoutPush($(this).attr('value'))})
-            }, 1000);
         }
 
         /**
