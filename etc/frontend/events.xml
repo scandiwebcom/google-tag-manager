@@ -20,4 +20,7 @@
     <event name="checkout_onepage_controller_success_action">
         <observer name="gtmSuccess" instance="Scandi\Gtm\Observer\Success"/>
     </event>
+    <event name="controller_front_send_response_before">
+        <observer name="gtmRenderer" instance="Scandi\Gtm\Observer\BeforeResponse" />
+    </event>
 </config>

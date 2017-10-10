@@ -80,6 +80,10 @@ class Cart extends Action
         if (!$this->getRequest()->isAjax()) {
             throw new NotFoundException(__('Usage is incorrect'));
         }
+        if (sizeof($this->getRequest()->getPost()) !== 0) {
+            $postData = $this->getRequest()->getPost();
+            throw new NotFoundException(__("Injection of data happened. The data was $postData"));
+        }
         $result = $this->jsonFactory->create();
         if ($this->customerSession->getAddToCart()) {
             $result->setData($this->customerSession->getAddToCart());

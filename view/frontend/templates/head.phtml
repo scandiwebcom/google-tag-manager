@@ -16,7 +16,6 @@
 <script>
     require(['jquery', 'jquery/ui'], function ($) {
         $(document).ready(function () {
-            getGeneralData();
             getCartUpdatePush();
             var i = 1;
             var items = jQuery('<?php echo $block->configHelper->getCategoryWrapper(); ?>');
@@ -88,7 +87,6 @@
                 type: "POST",
                 showLoader: false,
                 dataType: "json",
-                data: {"page": "<?= $block->request->getFullActionName() ?>", "isMain": "<?= $block->logo->isHomePage() ?>"},
                 success: function(responce) {
                     if (typeof(dataLayer) === 'undefined') {
                         return false;
@@ -119,11 +117,5 @@
             getDataForPush('gtm/index/cart');
         }
 
-        /**
-         * Serve the controller url to get general layer
-         */
-        function getGeneralData() {
-            getDataForPush('gtm/index/general');
-        }
     });
 </script>
