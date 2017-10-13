@@ -25,10 +25,15 @@
                     <label>Module Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="container_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+                <field id="gtm_script_snippet" translate="label" type="textarea" sortOrder="2" showInDefault="1" showInWebsite="1"
                        showInStore="1">
-                    <label>Container Id</label>
-                    <comment>Format is GTM-123456 or GTM-1234567</comment>
+                    <label>GTM script snippet</label>
+                    <comment>Please provide GTM script snippet</comment>
+                </field>
+                <field id="gtm_noscript_snippet" translate="label" type="textarea" sortOrder="2" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>GTM noscript snippet</label>
+                    <comment>Please provide GTM noscript snippet</comment>
                 </field>
                 <field id="store_in_head" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">

@@ -50,7 +50,8 @@ class Config
     const STORE_SCOPE = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
     const XML_PATH_MODULE_IS_ENABLED = 'scandi_gtm/general/enable';
     const XML_PATH_SCRIPT_IN_HEAD = 'scandi_gtm/general/store_in_head';
-    const XML_PATH_CONT_ID = 'scandi_gtm/general/container_id';
+    const XML_PATH_SCRIPT_SNIPPET = 'scandi_gtm/general/gtm_script_snippet';
+    const XML_PATH_NOSCRIPT_SNIPPET = 'scandi_gtm/general/gtm_noscript_snippet';
     const XML_PATH_CATEGORY_SELECTOR = 'scandi_gtm/developer/category_wrapper';
     const XML_PATH_CHECKOUT_STEPS = 'scandi_gtm/developer/checkout_steps';
     const XML_PATH_MAXIMUM_PRODUCTS = 'scandi_gtm/developer/pagesize_limit';
@@ -102,9 +103,17 @@ class Config
     /**
      * @return mixed
      */
-    public function getContId()
+    public function getScript()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_CONT_ID, self::STORE_SCOPE);
+        return $this->scopeConfig->getValue(self::XML_PATH_SCRIPT_SNIPPET, self::STORE_SCOPE);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNoScript()
+    {
+        return $this->scopeConfig->getValue(self::XML_PATH_NOSCRIPT_SNIPPET, self::STORE_SCOPE);
     }
 
     /**
