@@ -14,7 +14,7 @@ Add the extension by running
 
 ```
 composer config repositories.scandi-google-tag-manager git git@github.com:scandiwebcom/google-tag-manager.git
-composer require scandiwebcom/google-tag-manager:1.0.21
+composer require scandiwebcom/google-tag-manager:1.0.22
 php -f bin/magento setup:upgrade
 ```
 ## Configuration
@@ -23,7 +23,7 @@ Go to the Stores -> Configurations -> Scandiweb -> Google Tag Manager from the a
 
 1. Ensure that module is enabled, switch to 'Yes', if required;
 
-2. Add container ID from the Google Tag Manager account;
+2. Add script and noscript snippets into appropriate fields;
 
 3. Ensure that script is storing in the head, switch to 'Yes' if required;
 
