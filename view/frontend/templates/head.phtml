@@ -85,7 +85,8 @@
         function getDataForPush(urlPart) {
             $.ajax({
                 url: '<?= $block->getBaseUrl() ?>' + urlPart,
-                type: "POST",
+                type: "GET",
+                cache: false,
                 showLoader: false,
                 dataType: "json",
                 data: {"page": "<?= $block->request->getFullActionName() ?>", "isMain": "<?= $block->logo->isHomePage() ?>"},
