@@ -19,6 +19,7 @@ use Scandi\Gtm\Helper\Collectors\Cart;
 use Scandi\Gtm\Helper\Collectors\Event;
 use Scandi\Gtm\Helper\Name;
 use Magento\Search\Helper\Data;
+use \Magento\Framework\Locale\Resolver as LocaleResolver;
 
 /**
  * Class DataLayer
@@ -28,6 +29,11 @@ class DataLayer extends DataLayerCollector
 {
 
     const GENERAL_EVENT_NAME = 'general';
+
+    /**
+     * @var Context
+     */
+    protected $context;
 
     /**
      * @var Http
@@ -60,6 +66,11 @@ class DataLayer extends DataLayerCollector
     protected $event;
 
     /**
+     * @var LocaleResolver
+     */
+    private $localeResolver;
+
+    /**
      * DataLayer constructor.
      * @param Context $context
      * @param Http $request
@@ -68,6 +79,7 @@ class DataLayer extends DataLayerCollector
      * @param Customer $customerHelper
      * @param Cart $cart
      * @param Event $event
+     * @param LocaleResolver $localeResolver
      */
     public function __construct(
         Context $context,
@@ -76,7 +88,8 @@ class DataLayer extends DataLayerCollector
         Session $customerSession,
         Customer $customerHelper,
         Cart $cart,
-        Event $event
+        Event $event,
+        LocaleResolver $localeResolver
     )
     {
         parent::__construct($context);
@@ -86,6 +99,8 @@ class DataLayer extends DataLayerCollector
         $this->customerHelper = $customerHelper;
         $this->cart = $cart;
         $this->event = $event;
+        $this->context = $context;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -108,6 +123,8 @@ class DataLayer extends DataLayerCollector
     {
         $id = $this->customerHelper->getCustomerId($this->customerSession);
         $layer['pageType'] = $this->getPageName();
+        $layer['storeView'] = $this->context->getStoreManager()->getStore()->getCode();
+        $layer['language'] = $this->localeResolver->getLocale();
         $layer['event'] = $this::GENERAL_EVENT_NAME;
         $layer['customerId'] = $id;
         $layer['ecommerce']['cart'] = $this->cart->collectCart();
