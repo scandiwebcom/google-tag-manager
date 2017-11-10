@@ -83,7 +83,7 @@ class Configurable
         $productData = $this->addAttributesToData($product, $productData);
         $productData['name'] = $product->getName();
         $productData['price'] = number_format($product->getData("price_incl_tax"), 2);
-        $productData['qty'] = $product->getQty();
+        $productData['quantity'] = $product->getQty();
         $productData['brand'] = $this->config->getBrand();
         return $productData;
     }

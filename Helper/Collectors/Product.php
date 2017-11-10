@@ -120,7 +120,7 @@ class Product
         $productData['brand'] = $this->config->getBrand();
         $productData = $this->configurable->addAttributesToData($product, $productData);
         if ($product->getQty()) {
-            $productData['qty'] = $product->getQty();
+            $productData['quantity'] = $product->getQty();
         }
         if ($pageType) {
             $productData['list'] = $pageType;
