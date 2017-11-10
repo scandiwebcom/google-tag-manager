@@ -57,6 +57,7 @@ class Name
     /**
      * @param $pageNames
      * @param $pageName
+     * @param $isMain
      * @return bool
      */
     private function isPageInList($pageNames, $pageName, $isMain)

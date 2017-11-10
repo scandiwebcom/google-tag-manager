@@ -110,8 +110,8 @@ class DataLayer extends DataLayerCollector
     {
         $frontAction = $this->request->getFullActionName();
         if ($frontAction === 'gtm_index_general') {
-            return $this->nameHelper->getEccomPageName($this->getRequest()->getPost('page'),
-                $this->getRequest()->getPost('isMain'));
+            return $this->nameHelper->getEccomPageName($this->getRequest()->getParam('page'),
+                $this->getRequest()->getParam('isMain'));
         }
         return $this->nameHelper->getEccomPageName($frontAction);
     }

@@ -16,7 +16,6 @@ namespace Scandi\Gtm\Helper;
  */
 class Price
 {
-
     /**
      * @param $product
      * @return string
