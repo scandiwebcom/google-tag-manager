@@ -15,6 +15,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Magento\Customer\Model\Session as CustomerSession;
 use Scandi\Gtm\Block\Gtm;
 use Scandi\Gtm\Helper\Config;
 use Scandi\Gtm\Helper\Name;
@@ -47,10 +48,21 @@ class General extends Action
     protected $gtm;
 
     /**
+     * @var CustomerSession
+     */
+    protected $customerSession;
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * General constructor.
      * @param Context $context
      * @param JsonFactory $jsonFactory
      * @param JsonHelper $jsonHelper
+     * @param CustomerSession $customerSession
      * @param Name $name
      * @param Gtm $gtm
      * @param Config $config
@@ -59,6 +71,7 @@ class General extends Action
         Context $context,
         JsonFactory $jsonFactory,
         JsonHelper $jsonHelper,
+        CustomerSession $customerSession,
         Name $name,
         Gtm $gtm,
         Config $config
@@ -66,6 +79,7 @@ class General extends Action
     {
         $this->jsonFactory = $jsonFactory;
         $this->jsonHelper = $jsonHelper;
+        $this->customerSession = $customerSession;
         $this->name = $name;
         $this->gtm = $gtm;
         $this->config = $config;
@@ -85,8 +99,21 @@ class General extends Action
             throw new NotFoundException(__('Usage is incorrect'));
         }
         $result = $this->jsonFactory->create();
-        $dataLayer = $this->jsonHelper->jsonEncode($this->gtm->dataLayer->collectLayer());
-        $result->setData($dataLayer);
+        $dataLayer = $this->gtm->dataLayer->collectLayer();
+
+        if ($this->customerSession->getAddToCart()) {
+            $event = $this->customerSession->getAddToCart();
+            $this->customerSession->unsAddToCart();
+        } else if ($this->customerSession->getRemoveFromCart()) {
+            $event = $this->customerSession->getRemoveFromCart();
+            $this->customerSession->unsRemoveFromCart();
+        }
+        if (!isset($event)) {
+            $result->setData($this->jsonHelper->jsonEncode(array($dataLayer)));
+            return $result;
+        }
+
+        $result->setData($this->jsonHelper->jsonEncode(array($dataLayer, $this->jsonHelper->jsonDecode($event))));
         return $result;
     }
 }
