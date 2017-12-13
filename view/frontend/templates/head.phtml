@@ -17,7 +17,6 @@
     require(['jquery', 'jquery/ui'], function ($) {
         $(document).ready(function () {
             getGeneralData();
-            getCartUpdatePush();
             var i = 1;
             var items = jQuery('<?php echo $block->configHelper->getCategoryWrapper(); ?>');
             if (items) {
@@ -103,8 +102,10 @@
                             delete(responce['ecommerce']['cart']);
                         }
                     }
-                    dataLayer.push(responce);
-                    if (urlPart === 'gtm/index/general' && typeof(pushes) !== 'undefined') {
+                    $.each(responce, function(self) {
+                        dataLayer.push(responce[self]);
+                    });
+                    if (typeof(pushes) !== 'undefined') {
                         $.each(pushes, function(){
                             eval(this.valueOf());
                         })
@@ -115,13 +116,6 @@
 
         /**
          * Serve the controller url to get cart events
-         */
-        function getCartUpdatePush() {
-            getDataForPush('gtm/index/cart');
-        }
-
-        /**
-         * Serve the controller url to get general layer
          */
         function getGeneralData() {
             getDataForPush('gtm/index/general');
